@@ -4,6 +4,11 @@ class Logger {
 		this.debugOn = debug || false
 	}
 
+	fatal(text, ...data) {
+		this.error(text, data)
+		throw text
+	}
+
 	error(text, ...data) {
 		console.error(`ERR ${this.name}: ${text}`, data)
 	}
