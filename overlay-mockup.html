@@ -1,0 +1,206 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+
+/*
+	
+	COLOR REFERENCE:
+
+	White:  #fff;
+	Black:  #1c1c1c;
+	Orange: #ff8519;
+
+	TR: #D10202;
+	NC: #0d15b2;
+	VS: #b21bb0;
+*/
+
+body {
+	font-family: "Lemon/Milk";
+	/*background-color: #03060c;*/
+	background-color: transparent;
+	margin: 0;
+}
+
+div {
+	/*box-sizing: border-box;*/
+}
+
+.viewport {
+	max-width: 1920px;
+	min-width: 1920px;
+	max-height: 1080px;
+	min-height: 1080px;
+	/*margin: auto;*/
+	/*border: 5px solid #333;*/
+	
+	position: relative;	
+	overflow: hidden;
+	/*position: absolute;*/
+}
+
+.top {
+	height: 77px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+
+	background-color: #fff;
+	text-shadow: 1px 1px 2px #1c1c1c;
+	box-shadow: 0 0 30px #1c1c1c;
+}
+
+	.top--middle {
+		background-color: #1c1c1c;
+		width: 680px;
+		margin: 0 auto;
+		color: #fff;
+		text-align: center;
+		height: 81px;
+		line-height: 77px;
+		font-size: 49px;
+		z-index: 1;
+		transform: perspective(77px) rotateX(-7deg);
+	}
+
+		.top--middle--text {
+			transform: perspective(77px) rotateX(7deg);
+		}
+
+	.top--inner {
+		position: absolute;
+		top: 3px;
+		right: 0;
+		left: 0;
+		height: 77px;
+		display: flex;
+		z-index: 0;
+		padding: 0 55px;
+	}
+
+		.top--inner--left, .top--inner--right {
+			flex: 1;
+			display: flex;
+			font-size: 49px;
+		}
+
+		.top--inner--left div, .top--inner--right div {
+			flex: 1;
+			text-align: center;
+		}
+
+		.top--inner--left .spacer, .top--inner--right .spacer {
+			min-width: 420px;
+		}
+
+			.top--inner--left {
+				color: #ff8519;
+			}
+
+			.top--right--red {
+				color: #D10202;
+			}
+
+			.top--right--blue {
+				color: #0d15b2;
+			}
+
+			.top--right--purple {
+				color: #b21bb0;
+			}
+
+.bottom {
+	background-color: #1c1c1c;
+	height: 200px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+	
+	.bottom--labels {
+		line-height: 52.5px;
+		top: 2px;
+		right: 0;
+		left: 0;
+		font-size: 34px;
+		position: relative;
+	}
+
+		.bottom--labels--header {
+			background-color: #fff;
+			/*border-right: 63px solid #ff8519;*/
+			width: 320px;
+			position: absolute;
+			left: -12px;
+
+			border-left: 10px solid #fff;
+			text-align: center;
+			z-index: 1;
+			transform: perspective(47px) rotateX(-7deg);
+		}
+
+			.labels--header--text {
+				transform: perspective(47px) rotateX(7deg);
+				padding-bottom: 1.5px
+			}
+
+		.bottom--labels--accent {
+			background-color: #ff8519;
+			width: 320px;
+			z-index: 0;
+			position: relative;
+			right: -48px;
+			border-left: 10px solid #fff;
+			text-align: center;
+			transform: perspective(47px) rotateX(-7deg);
+		}
+
+		.bottom--labels--title {
+			color: #fff;
+			width: 1920px;
+			position: absolute;
+			top: 0;
+			padding-left: 425px;
+		}
+
+</style>
+
+<div class="viewport">
+
+	<div class="top-empty top">
+		
+		<div class="top--middle">
+			<div class="top--middle--text">Harasser Derby II</div>
+		</div>
+
+		<div class="top--inner">
+			<div class="top--inner--left">
+				<div class="top--left--round">ROUND 2</div>
+				<div class="top--left--time">O 14:59</div>
+				<div class="spacer"></div>
+			</div>
+			<div class="top--inner--right">
+				<div class="spacer"></div>
+				<div class="top--right--red">O 100</div>
+				<div class="top--right--purple">O 100</div>
+				<div class="top--right--blue">O 100</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="bottom">
+		
+		<div class="bottom--labels">
+			<div class="bottom--labels--header">
+				<div class="labels--header--text">Statistics</div>
+			</div>
+			<div class="bottom--labels--accent">&nbsp;</div>
+			<div class="bottom--labels--title">ROUND TOP TEAMS (V. KILLS)</div>
+		</div>
+
+	</div>
+	
+</div>
