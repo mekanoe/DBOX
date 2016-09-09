@@ -10,24 +10,24 @@ class Logger {
 	}
 
 	error(text, ...data) {
-		console.error(`ERR ${this.name}: ${text}`, data)
+		console.error(`ERR    ${this.name}:\n    ${text}`, data)
 	}
 
 	warn(text, ...data) {
-		console.warn(`WARN ${this.name}: ${text}`, data)
+		console.warn(`WARN   ${this.name}:\n    ${text}`, data)
 	}
 
 	notice(text, ...data) {
-		console.log(`NOTICE ${this.name}: ${text}`, data)
+		console.log(`NOTICE ${this.name}:\n    ${text}`, data)
 	}
 
 	info(text, ...data) {
-		console.info(`INFO ${this.name}: ${text}`, data)
+		console.info(`INFO   ${this.name}:\n    ${text}`, data)
 	}
 
 	debug(text, ...data) {
 		if (this.debugOn) {
-			console.log(`DEBUG ${this.name}: ${text}`, data)
+			console.log(`DEBUG  ${this.name}:\n    ${text}`, data)
 		}
 	}
 

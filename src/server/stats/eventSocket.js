@@ -1,20 +1,19 @@
 const ws = require('ws')
-const Map = require('immutable').Map
-const Set = require('immutable').Set
+const { Map, Set } = require('immutable')
 
 // const c = require('../conf')
 
 const log = new (require('../logger'))('server/stats/eventSocket', true)
 
 ////
-// A StatsSocket is a websocket client for the PS2 live event stream API.
+// An EventSocket is a websocket client for the PS2 live event stream API.
 // Docs: http://census.daybreakgames.com/#what-is-websocket
 // 
 // This includes a simple eventemitter.
 //
 // Arguments
 //   config obj{eventNames: []str{'VehicleDestroy','PlayerLogin','PlayerLogout'}, worlds: []str{'19'}}
-class StatsSocket {
+class EventSocket {
 	constructor(config) {
 		// Subscribe to these relevant events on these relevant worlds.
 		this.eventNames = config.eventNames || ['VehicleDestroy','PlayerLogin','PlayerLogout']
@@ -196,4 +195,4 @@ class StatsSocket {
 	}
 }
 
-module.exports = StatsSocket
+module.exports = EventSocket
