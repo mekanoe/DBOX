@@ -44,3 +44,7 @@ jspm_packages
 
 # XSplit stuff
 *.xml
+
+# Weird
+*/._*
+._*

@@ -2,7 +2,7 @@
   "name": "dbox",
   "version": "1.0.0",
   "description": "planetside 2 harassee derby overlay",
-  "main": "app/server.js",
+  "main": "dist/server/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/kayteh/dbox/issues"
   },
-  "homepage": "https://github.com/kayteh/dbox#readme"
+  "homepage": "https://github.com/kayteh/dbox#readme",
+  "dependencies": {
+    "bufferutil": "^1.2.1",
+    "dotenv": "^2.0.0",
+    "immutable": "^3.8.1",
+    "utf-8-validate": "^1.2.1",
+    "ws": "^1.1.1"
+  }
 }

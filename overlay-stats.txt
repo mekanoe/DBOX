@@ -1,17 +1,22 @@
 
 OPENER:
 - information bar
+	- team captains
+	- lineups
+	- rules
+	- maps (possibly covered in proper images full-screen)
 
 DURING ROUND:
 - round top teams
 - round top players
 - match top teams (except round 1)
-- round weapon stats
+- ? round weapon stats
+- score line bar (in rotation at 2m left)
 
 INTERMISSION:
 - last round top teams
 - match top teams
-- round weapon stats
-- match weapon stats (except round 1)
+- ? round weapon stats
+- ? match weapon stats (except round 1)
 - team leaders
 
