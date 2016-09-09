@@ -35,3 +35,12 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# Apple stuff
+.DS_Store
+._.DS_Store
+*/.DS_Store
+*/._.DS_Store
+
+# XSplit stuff
+*.xml
