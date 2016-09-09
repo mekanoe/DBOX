@@ -20,6 +20,7 @@
     "bufferutil": "^1.2.1",
     "dotenv": "^2.0.0",
     "immutable": "^3.8.1",
+    "koa": "^1.2.4",
     "superagent": "^2.2.0",
     "superagent-promise": "^1.1.0",
     "utf-8-validate": "^1.2.1",
