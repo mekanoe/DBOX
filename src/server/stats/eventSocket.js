@@ -76,13 +76,17 @@ class EventSocket {
 	// If the socket is closed, this will throw.
 	startListening() {
 		let send = () => {
-			this.socket.send(JSON.stringify({
-				"service":"event",
-				"action":"subscribe",
-				"characters":["all"],
-				"worlds":this.worlds,
-				"eventNames":this.eventNames
-			}))
+			let payload = JSON.stringify({
+				service: 'event',
+				action: 'subscribe',
+				characters: ['all'],
+				worlds: this.worlds,
+				eventNames: this.eventNames
+			})
+
+			log.debug('sending payload', payload)
+
+			this.socket.send(payload)
 			log.notice('listen started')
 			this.listening = true
 		}
@@ -104,7 +108,11 @@ class EventSocket {
 	// Sends the unsubscribe frame to the API.
 	// Useful for temporary halts, or idling.
 	stopListening() {
-		this.socket.send(JSON.stringify({"service":"event","action":"clearSubscribe","all":"true"}))
+		this.socket.send(JSON.stringify({
+			service: 'event',
+			action: 'clearSubscribe',
+			all: 'true'
+		}))
 		log.notice('listen stopped')
 		this.listening = false
 	}
