@@ -1,8 +1,6 @@
 const EventEmitter = require('eventemitter3')
 const log = new (require('../logger'))('server/stats/eventSocketWatchdog', true)
 
-const heartbeatRegex = /^EventServerEndpoint_(\w+)_(\d+)$/
-
 ////
 // This is a helper class for EventStream to properly watchdog EventSocket heartbeats,
 // and panic if things start to go wrong.
