@@ -1,5 +1,4 @@
 const ws = require('ws')
-const { Map, Set } = require('immutable')
 const EventEmitter = require('eventemitter3')
 
 // const c = require('../conf')
