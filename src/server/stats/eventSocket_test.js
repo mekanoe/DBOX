@@ -1,6 +1,6 @@
 const eventSocket = require('./eventSocket')
 
-const log = new (require('../logger'))('server/stats/eventSocket_test', true)
+const log = new (require('../logger'))('server/stats/eventSocket_test')
 
 log.info('starting socket test')
 

@@ -1,7 +1,9 @@
+const { debug } = require('yargs').argv
+
 class Logger {
-	constructor(name, debug) {
+	constructor(name, debugOverride = false) {
 		this.name = name
-		this.debugOn = debug || false
+		this.debugOn = debug || debugOverride
 	}
 
 	fatal(text, ...data) {

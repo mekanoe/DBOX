@@ -1,5 +1,5 @@
 const EventEmitter = require('eventemitter3')
-const log = new (require('../logger'))('server/stats/eventStream', true)
+const log = new (require('../logger'))('server/stats/eventStream')
 const { Map } = require('immutable')
 
 const EventAPI = require('./eventApi')

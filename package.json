@@ -25,6 +25,7 @@
     "superagent": "^2.2.0",
     "superagent-promise": "^1.1.0",
     "utf-8-validate": "^1.2.1",
-    "ws": "^1.1.1"
+    "ws": "^1.1.1",
+    "yargs": "^5.0.0"
   }
 }

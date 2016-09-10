@@ -1,5 +1,5 @@
 const EventEmitter = require('eventemitter3')
-const log = new (require('../logger'))('server/stats/eventSocketWatchdog', true)
+const log = new (require('../logger'))('server/stats/eventSocketWatchdog')
 
 ////
 // This is a helper class for EventStream to properly watchdog EventSocket heartbeats,
