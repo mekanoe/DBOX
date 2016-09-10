@@ -197,7 +197,7 @@ class EventSocketWatchdog {
 		}
 
 		log.debug('panic', reason)
-		this.__panicCounter = this.__panicCounter++
+		this.__panicCounter = this.__panicCounter + 1
 	}
 
 
