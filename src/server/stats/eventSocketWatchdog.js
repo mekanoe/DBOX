@@ -185,7 +185,10 @@ class EventSocketWatchdog {
 
 	////
 	// @internal
-	// Report a panic. Unless the counter isn't beyond the threshold, 
+	// Report a panic. Unless the counter isn't beyond the threshold, this just counts.
+	//
+	// Arguments
+	//   reason str{}
 	_panic(reason) {
 		if(this.__panicCounter >= this.threshold) {
 			log.warning('panic threshold reached', reason)
