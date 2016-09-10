@@ -1,5 +1,5 @@
 const superagent = require('superagent-promise')(require('superagent'), Promise)
-const log = new (require('../logger'))('server/stats/eventApi')
+const log = new (require('../logger'))('server/stats/eventApi', true)
 const { OrderedSet } = require('immutable')
 
 const ENDPOINT = 'https://census.daybreakgames.com/s:PomfDBOX/get/ps2:v2'

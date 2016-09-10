@@ -10,7 +10,7 @@ es.on('VehicleDestroy', (data) => {
 	log.info('vd data', data)
 })
 
-es.onHeartbeat((data) => {
+es.on('heartbeat', (data) => {
 	log.info('heartbeat', data)
 })
 

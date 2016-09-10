@@ -1,9 +1,10 @@
 const ws = require('ws')
 const EventEmitter = require('eventemitter3')
+const { Map } = require('immutable')
 
 // const c = require('../conf')
 
-const log = new (require('../logger'))('server/stats/eventSocket', true)
+const log = new (require('../logger'))('server/stats/eventSocket')
 
 ////
 // An EventSocket is a websocket client for the PS2 live event stream API.
@@ -13,14 +14,13 @@ const log = new (require('../logger'))('server/stats/eventSocket', true)
 //
 // Arguments
 //   config obj{eventNames: []str{'VehicleDestroy','PlayerLogin','PlayerLogout'}, worlds: []str{'19'}}
-class EventSocket {
+class EventSocket extends EventEmitter {
 	constructor(config) {
+		super()
+
 		// Subscribe to these relevant events on these relevant worlds.
 		this.eventNames = config.eventNames || ['VehicleDestroy','PlayerLogin','PlayerLogout']
 		this.worlds = config.worlds || ['19'] // 19 == Jaeger
-
-		// Mount EventEmitter
-		EventEmitter.call(this)
 
 		// Public listening state
 		this.listening = false
@@ -50,8 +50,8 @@ class EventSocket {
 				this.emit('heartbeat',d)
 			} else if(d.type == "serviceMessage") {
 				log.debug('got serviceMessage', d.payload.event_name)
-				this.emit('serviceMessage', d.payload)
-				this.emit(d.payload.event_name, d.payload)
+				this.emit('serviceMessage', Map(d.payload))
+				this.emit(d.payload.event_name, Map(d.payload))
 			} else {
 				log.notice('got odd message', d)
 				this.emit(d.type, d)
@@ -60,7 +60,7 @@ class EventSocket {
 
 		w.on('close', () => {
 			this.emit('closed')
-			log.warning('socket closed')
+			log.warn('socket closed')
 			this.listening = false
 		})
 
@@ -109,11 +109,13 @@ class EventSocket {
 	// Sends the unsubscribe frame to the API.
 	// Useful for temporary halts, or idling.
 	stopListening() {
-		this.socket.send(JSON.stringify({
-			service: 'event',
-			action: 'clearSubscribe',
-			all: 'true'
-		}))
+		if(this.socket.readyState < ws.CLOSING) {
+			this.socket.send(JSON.stringify({
+				service: 'event',
+				action: 'clearSubscribe',
+				all: 'true'
+			}))
+		} 
 		log.notice('listen stopped')
 		this.listening = false
 		this.emit('listen-stop')

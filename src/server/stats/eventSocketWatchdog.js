@@ -15,9 +15,11 @@ const log = new (require('../logger'))('server/stats/eventSocketWatchdog', true)
 //	 eventSocket EventSocket
 //	 anon 		 obj{panicTimeout int{31000}, checkInterval int{1000}, 
 //                   threshold int{2}, heartbeatWorld str{'Jaeger_19'}}
-class EventSocketWatchdog {
-	constructor(eventSocket, { panicTimeout = 31000, checkInterval = 1000, 
+class EventSocketWatchdog extends EventEmitter {
+	constructor(eventSocket, { panicTimeout = 31000, checkInterval = 10000, 
 							   threshold = 2, heartbeatWorld = 'Jaeger_19' }) {
+		super()
+
 		this.eventSocket = eventSocket 		   // The socket we're watching
 		this.panicTimeout = panicTimeout	   // The time in ms before the watchdog should panic
 		this.checkInterval = checkInterval	   // The time in ms to run watchdog checks
@@ -25,20 +27,21 @@ class EventSocketWatchdog {
 		this.heartbeatWorld = heartbeatWorld   // The world we care about in heartbeats. All others we don't care about.
 											   // This is set to Jaeger by default. Format is Servername_WorldID, e.g. Jaeger_19
 
-		EventEmitter.call(this)
-
 		// Set state constants
-		['WAITING', 'WATCHING', 'PANIC', 'FATAL'].forEach((v, i) => { this[v]=i })
+		this.WAITING = 0
+		this.WATCHING = 1
+		this.PANIC = 2
+		this.FATAL = 3
 
 		// See class docstring for this
 		this.state = this.WAITING
 
-		// Mount heartbeat and close handlers
-		eventSocket.on('heartbeat', this.handleHeartbeat)
-		eventSocket.on('close', this.handleClose)
-
-		// Some instance helper vars
 		this.__setDefaults()
+
+		// Mount heartbeat and close handlers
+		eventSocket.on('heartbeat', this.handleHeartbeat.bind(this))
+		eventSocket.on('close', this.handleClose.bind(this))
+
 	}
 
 
@@ -75,8 +78,8 @@ class EventSocketWatchdog {
 
 		this._earlySetup()
 		this.__watchdogStartTime = new Date()
-		this.__watchdogCheckIntv = setInterval(this._watchdogCheck, this.checkInterval)
-		this.__panicCheckIntv = setInterval(this._panicCheck, this.panicTimeout - this.checkInterval)
+		this.__watchdogCheckIntv = setInterval(this._watchdogCheck.bind(this), this.checkInterval)
+		//this.__panicCheckIntv = setInterval(this._panicCheck, this.panicTimeout - this.checkInterval)
 	}
 
 
@@ -100,9 +103,11 @@ class EventSocketWatchdog {
 	// Watchdog runner. Fatals if socket is closed. Panics if successful heartbeat was too far away.
 	_watchdogCheck() {
 
+		log.debug('running watchdog')
+
 		// Simplest watchdog step. Socket will not be closed, watchdog here.
 		// This won't panic, it only fatals.
-		if (this.__socketClosed === true) {
+		if (this.__socketClosed === true || this.eventSocket.socket.readyState >= 2) {
 			this._fatal()
 			return
 		}
@@ -130,7 +135,7 @@ class EventSocketWatchdog {
 		// That heartbeat should have been within panicTimeout of now, watchdog here.
 		if (this.__lastHeartbeat !== null) {
 
-			if (this.__lastHeartbeat + this.panicTimeout < Date.now()) {
+			if (+this.__lastHeartbeat + this.panicTimeout < Date.now()) {
 
 				this._panic('HEARTBEAT_TIMEOUT')
 				return
@@ -138,6 +143,8 @@ class EventSocketWatchdog {
 			}
 
 		}
+
+		log.debug('watchdog reached end')
 
 	}
 
@@ -162,11 +169,12 @@ class EventSocketWatchdog {
 	//	 d obj{online obj[string]string{}}
 	handleHeartbeat(d) {
 		if (d.online[`EventServerEndpoint_${this.heartbeatWorld}`] === undefined) {
-			log.panic('heartbeat lacks watchdog server in payload')
+			log.fatal('heartbeat lacks watchdog server in payload', { lookingFor: this.heartbeatWorld, got: Object.keys(d.online).join(',') })
 		} else {
 			if (d.online[`EventServerEndpoint_${this.heartbeatWorld}`] === "true") {
 				// Heartbeat has given us good data, let's do it!
-				this.__lastHeartbeat = new Date()
+				this.__lastHeartbeat = Date.now()
+				log.debug(`got a heartbeat for ${+this.__lastHeartbeat}`)
 			} else {
 				// If this heartbeat is actually false, it's not data we care about.
 				// We just log and move on.
@@ -179,6 +187,7 @@ class EventSocketWatchdog {
 	////
 	// Handles closed events from eventSocket
 	handleClose() {
+		log.warn('handleClose')
 		this.__socketClosed = true
 	}
 
@@ -191,7 +200,7 @@ class EventSocketWatchdog {
 	//   reason str{}
 	_panic(reason) {
 		if(this.__panicCounter >= this.threshold) {
-			log.warning('panic threshold reached', reason)
+			log.warn('panic threshold reached', reason)
 			this.__panicReason = reason
 			this.emit('panic', reason)
 		}
@@ -205,7 +214,7 @@ class EventSocketWatchdog {
 	// @internal
 	// Report that the socket has died. We can't do anything else.
 	_fatal() {
-		log.warning('watchdog fatalled')
+		log.warn('watchdog fatalled')
 		this.stop()
 		this.emit('fatal')
 	}
