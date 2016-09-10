@@ -1,5 +1,6 @@
 const ws = require('ws')
 const { Map, Set } = require('immutable')
+const EventEmitter = require('eventemitter3')
 
 // const c = require('../conf')
 
@@ -18,11 +19,9 @@ class EventSocket {
 		// Subscribe to these relevant events on these relevant worlds.
 		this.eventNames = config.eventNames || ['VehicleDestroy','PlayerLogin','PlayerLogout']
 		this.worlds = config.worlds || ['19'] // 19 == Jaeger
-		
-		// Private attributes for the event emitter
-		this.__on = Set()
-		this.__onAll = Set()
-		this.__onHeartbeat = Set()
+
+		// Mount EventEmitter
+		EventEmitter.call(this)
 
 		// Public listening state
 		this.listening = false
@@ -49,18 +48,19 @@ class EventSocket {
 
 			if (d.type === "heartbeat") {
 				log.debug('got heartbeat')
-				this._triggerHeartbeat(d)
+				this.emit('heartbeat',d)
 			} else if(d.type == "serviceMessage") {
 				log.debug('got serviceMessage', d.payload.event_name)
-				this._triggerAll(d.payload)
-				this._triggerOn(d.payload.event_name, d.payload)
+				this.emit('serviceMessage', d.payload)
+				this.emit(d.payload.event_name, d.payload)
 			} else {
 				log.notice('got odd message', d)
+				this.emit(d.type, d)
 			}
 		})
 
 		w.on('close', () => {
-			this._socketClosed()
+			this.emit('closed')
 			log.warning('socket closed')
 			this.listening = false
 		})
@@ -101,6 +101,8 @@ class EventSocket {
 				})
 		}
 
+		this.emit('listen-start')
+
 	}
 
 
@@ -115,91 +117,7 @@ class EventSocket {
 		}))
 		log.notice('listen stopped')
 		this.listening = false
-	}
-
-
-	////
-	// Adds a listener to every serviceMessage event
-	//
-	// Arguments
-	//   callback func(obj{})
-	onAll(callback) {
-		this.__onAll = this.__onAll.add(callback)
-	}
-
-
-	////
-	// Adds a listener to the event emitter
-	//
-	// Arguments
-	//	 eventName string
-	//   callback  func(obj{})
-	on(eventName, callback) {
-		this.__on = this.__on.add({eventName, callback})
-	}
-
-
-	////
-	// Adds a listener for heartbeat events.
-	// Useful for socket watchdogging.
-	//
-	// Arguments
-	//   callback func(obj{})
-	onHeartbeat(callback) {
-		this.__onHeartbeat = this.__onHeartbeat.add(callback)
-	}
-
-
-	////
-	// @internal
-	// Fires event handlers for a generic Set without the event discriminator.
-	// Used for _triggerHeartbeat and _triggerAll
-	//
-	// Arguments
-	//   handlers Set([]func(obj{}))
-	//   data     obj{}
-	_triggerGenericOn(handlers, data) {
-		handlers.forEach((v) => {
-			v(data)
-		})
-	}
-
-
-	////
-	// @internal
-	// Triggers serviceMessage event handlers that are discriminated per event type.
-	//
-	// Arguments
-	//   eventName string
-	//   data      obj{}
-	_triggerOn(eventName, data) {
-		this.__on.forEach((v) => {
-			if (v.eventName === eventName) {
-				v.callback(data)
-			}	
-		})
-	}
-
-
-	////
-	// @internal
-	// Triggers all serviceMessage event handlers via generic
-	//
-	// Arguments
-	//	 data obj{}
-	_triggerAll(data) {
-		this._triggerGenericOn(this.__onAll, data)
-	}
-
-
-	////
-	// @internal
-	// Triggers heartbeat event handlers via generic
-	//
-	// Arguments
-	//	 data obj{}
-	_triggerHeartbeat(data) {
-		this._triggerGenericOn(this.__onHeartbeat, data)
+		this.emit('listen-stop')
 	}
 }
 
