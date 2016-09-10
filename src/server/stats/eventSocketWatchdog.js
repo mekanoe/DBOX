@@ -9,8 +9,8 @@ const heartbeatRegex = /^EventServerEndpoint_(\w+)_(\d+)$/
 // Note that this won't panic immediately. It will try to give it a few failures headroom.
 //
 // States
-//	 - WAITING (0) - not monitoring, will not fire hooks
-//	 - WATCHING (1) - monitoring, will fire hooks
+//   - WAITING (0) - not monitoring, will not fire hooks
+//   - WATCHING (1) - monitoring, will fire hooks
 //   - PANIC (2) - monitoring, alert mode, watchdog isn't getting heartbeats from server
 //   - FATAL (3) - not monitoring, alert mode, socket has closed
 // Arguments
