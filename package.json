@@ -49,6 +49,7 @@
     "immutable": "^3.7.6",
     "ioredis": "^2.3.0",
     "koa": "^1.2.4",
+    "koa-router": "^5.4.0",
     "moment": "^2.11.2",
     "moment-twitter": "0.2.0",
     "node-uuid": "^1.4.7",

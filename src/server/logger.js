@@ -6,7 +6,7 @@ const { debug } = require('yargs').argv
 class Logger {
 	constructor(name, debugOverride = false) {
 		this.name = name
-		this.debugOn = debug || debugOverride
+		this.debugOn = (debug || process.env.DEBUG) || debugOverride
 	}
 
 	fatal(text, ...data) {
@@ -28,6 +28,10 @@ class Logger {
 
 	info(text, ...data) {
 		console.info(`INFO   ${this.name}:\n    ${text}`, data)
+	}
+
+	request(text, ...data) {
+		console.info(`HTTP   ${this.name}:\n    ${text}`)
 	}
 
 	debug(text, ...data) {
