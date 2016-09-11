@@ -45,6 +45,10 @@ jspm_packages
 # XSplit stuff
 *.xml
 
+# Build/data dirs
+dist
+.data
+
 # Weird
 */._*
 ._*
