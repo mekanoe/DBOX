@@ -1,5 +1,3 @@
-const { debug } = require('yargs').argv
-
 // logger template
 // const log = new (require('../logger'))('server/thing')
 

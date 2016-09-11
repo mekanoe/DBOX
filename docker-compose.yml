@@ -1,0 +1,20 @@
+version: '2'
+services:
+
+    redis:
+        image: redis:3-alpine
+        container_name: dbox-dev-redis
+        command: redis-server --appendonly yes
+        ports:
+            - "6379:6379"
+        volumes:
+            - ".data/redis:/data"
+
+    rethink:
+        image: rethinkdb:2
+        container_name: dbox-dev-rethink
+        ports:
+            - "8080:8080"
+            - "28015:28015"
+        volumes:
+            - ".data/r:/data"

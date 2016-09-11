@@ -45,6 +45,10 @@ class CharacterFactory {
 	_getIdFromApi(id) {
 		return superagent.get(`${ENDPOINT}${id}`).then(data => {
 			log.debug('requested from api', {id})
+			if (data.body.character_list === undefined || data.body.character_list.length === 0) {
+				return '~unknown~'
+			}
+
 			return data.body.character_list[0]
 		}).catch(err => {
 			log.error('api error', err)

@@ -204,7 +204,7 @@ class EventStream extends EventEmitter {
 			return
 		}
 
-		data = data.filter(v => v.attacker_vehicle_id === this.filterData.vehicleId && v.world_id === this.filterData.worldId)
+		data = data.filter(v => v.vehicle_id === this.filterData.vehicleId && v.world_id === this.filterData.worldId)
 
 		if (data.size === 0) {
 			// nothing to do
@@ -226,7 +226,7 @@ class EventStream extends EventEmitter {
 	//   data Immutable#Map
 	// Returns bool
 	_checkAcceptable(data) {
-		return (data.get('attacker_vehicle_id') === this.filterData.vehicleId && data.get('world_id') === this.filterData.worldId)
+		return (data.get('vehicle_id') === this.filterData.vehicleId && data.get('world_id') === this.filterData.worldId)
 	}
 
 
