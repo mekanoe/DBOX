@@ -2,10 +2,12 @@
   "name": "dbox",
   "version": "1.0.0",
   "description": "planetside 2 harassee derby overlay",
-  "main": "dist/server/main.js",
+  "main": "server/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "gulp": "gulp"
+    "gulp": "gulp",
+    "start": "pm2 start server/main.js --name=dbox --watch; pm2 logs dbox -f",
+    "migrate": "node utils/migrate.js --all"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-runtime": "^6.5.0",
     "bufferutil": "^1.2.1",
+    "co-fs": "^1.2.0",
     "del": "^2.2.0",
     "dotenv": "^2.0.0",
     "eventemitter3": "^2.0.0",
@@ -76,7 +79,6 @@
     "socket.io-client": "^1.4.5",
     "superagent": "^1.7.2",
     "superagent-promise": "^1.1.0",
-    "toml": "^2.3.0",
     "utf-8-validate": "^1.2.1",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1",
