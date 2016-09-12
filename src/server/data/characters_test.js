@@ -6,6 +6,7 @@ const CharacterFactory = require('./characters')
 
 let chars = new CharacterFactory({services:{redis}})
 
-let c = chars.getNameById('5428010618020694593').then(name => {
+chars.getNameById('5428010618020694593').then(name => {
 	log.debug('got char', {name})
+	process.exit()
 })

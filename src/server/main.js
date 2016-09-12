@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({silent: true});
 const log = new (require('./logger'))('server/main')
 
 const http = require('http')
@@ -29,5 +29,5 @@ app.use(router.routes()).use(router.allowedMethods())
 
 // Start it!
 //TODO: configurate!
-log.info('starting HTTP server on 4000')
-server.listen(4000)
+log.info(`starting HTTP server on ${process.env.APP_PORT || 4000}`)
+server.listen(process.env.APP_PORT || 4000)

@@ -30,17 +30,18 @@ class Dbox {
 			port: process.env.REDIS_PORT || '6379',
 			host: process.env.REDIS_HOST || 'localhost',
 			parser: 'hiredis',
-			dropBufferSupport: true
+			dropBufferSupport: true,
+			enableReadyCheck: true,
+			enableOfflineQueue: true
 		})
 
 		this.ctx.r = new (require('rethinkdbdash'))({
 			db: 'dbox',
-			servers: [{
-				host: process.env.RETHINK_HOST || 'localhost',
-				port: process.env.RETHINK_PORT || 28015,
-			}],
+			host: process.env.RETHINK_HOST || 'localhost',
+			port: process.env.RETHINK_PORT || 28015,
 			buffer: 300,
-    		max: 3000
+    		max: 3000,
+    		silent: true,
 		})
 	}
 
@@ -50,7 +51,10 @@ class Dbox {
 	// Mount the routes! Makes heavy use of Dbox#_route.
 	_mountRoutes() {
 
-		this._route('./api/test')
+		//
+
+		// Only mount test routes in development.
+		if (process.env.NODE_ENV === 'development') this._route('./api/test')
 
 	}
 
