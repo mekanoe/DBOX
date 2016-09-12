@@ -10,7 +10,7 @@ const Dbox = require('./Dbox')
 
 // Create the server and socket.io server
 const server = http.createServer(app.callback())
-const io = _io(server)
+const io = _io(server, { transports: ['websocket'], wsEngine: 'uws' })
 
 // Construct the Dbox!
 const D = new Dbox(router, io, app.context)
