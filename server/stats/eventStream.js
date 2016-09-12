@@ -59,6 +59,13 @@ class EventStream extends EventEmitter {
 
 
 	////
+	// Stops the event stream.
+	stop() {
+		this._stopCurrent()
+	}
+
+
+	////
 	// @internal
 	// Moves through data sources in a cascading format, stops at the end.
 	// The general order:
