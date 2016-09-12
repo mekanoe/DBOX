@@ -24,3 +24,37 @@ export default function reducer(state = initialState, {type, data}) {
 
 	}
 }
+
+export function startEventListener(id) {
+	return (dispatch) => {
+
+		let socket = io(/*`match/${id}`*/)
+
+		socket.on('event', {
+
+		})
+
+	}
+}
+
+export function startTimer() {
+	return (dispatch, getState) => {
+		let intv = setInterval(() => {
+			let { overlayMatchData: { secondsLeft } } = getState()
+			
+			if (secondsLeft > 0) {
+				dispatch({ type: 'md:set_round_seconds_left', data: { secondsLeft: secondsLeft-1 } })
+			}
+
+		}, 1000)
+
+		dispatch({ type: 'md:set_clock_intv', data: { intv } })
+	}
+}
+
+export function stopTimer() {
+	return (dispatch, getState) => {
+		const { overlayMatchData: { clockInterval } } = getState()
+		clearInterval(clockInterval)
+	}
+}

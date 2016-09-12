@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Radium from 'radium'
 import shouldPureComponentUpdate from 'react-pure-render/function'
+import moment from 'moment'
 
 import * as OverlayActions from '../stores/overlay'
 import styles from '../styles/overlay-top'
@@ -47,12 +48,37 @@ class OverlayTopLeft extends Component {
 	shouldComponentUpdate = shouldPureComponentUpdate
 
 	render() {
-		return <div style={[styles.innerSides, styles.innerLeft]}>
+		return <div style={[styles.innerSides, styles.innerLeft]} onClick={this.props.actions.startTimer}>
 			<div style={styles.innerSidesContent}>ROUND {this.props.overlayMatchData.round}</div>
-			<div style={styles.innerSidesContent}>O {this.props.overlayMatchData.roundTime.M}:{this.props.overlayMatchData.roundTime.S}</div>
+			<div style={styles.innerSidesContent}>O {this._renderTime()}</div>
 
 			<div style={styles.innerSpacer}/>
 		</div>
+	}
+
+	_renderTime() {
+		let { secondsLeft } = this.props.overlayMatchData
+
+		if (secondsLeft < 0) {
+			secondsLeft = 0
+		}
+
+		let minutes = Math.floor(secondsLeft / 60)
+		let seconds = secondsLeft % 60
+
+		return `${this._pad(minutes)}:${this._pad(seconds)}`
+	}
+
+	_pad(num) {
+		let str = num + ''
+
+		if (num === 0) {
+			str = '00'
+		} else if (num < 10) {
+			str = '0' + num
+		}
+
+		return str
 	}
 }
 

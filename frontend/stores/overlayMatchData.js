@@ -9,13 +9,13 @@ const initialState = {
 	}),
 
 	round: 0,
-	roundTime: {
-		M: '00',
-		S: '00',
-	},
+
+	secondsLeft: 0,
 	// roundTimerBlink: false,
 
-	roundEnd: null
+	roundEnd: null,
+
+	clockInterval: null,
 }
 
 export default function reducer(state = initialState, {type, data}) {
@@ -28,11 +28,18 @@ export default function reducer(state = initialState, {type, data}) {
 		// 		roundEnd: +data.time,
 		// 	}
 
-		case 'md:set_round_time_left':
+		case 'md:set_round_seconds_left':
 
 			return {
 				...state,
-				roundTime: data.roundTime
+				secondsLeft: data.secondsLeft
+			}
+
+		case 'md:set_clock_intv':
+
+			return {
+				...state,
+				clockInterval: data.intv
 			}
 
 		case 'md:increment_score':
