@@ -4,7 +4,7 @@ import { StyleRoot, Style } from 'radium'
 import { Provider } from 'react-redux'
 
 import store from './store'
-import globalStyle from './styles/global'
+import globalStyle from './styles/overlay-global'
 
 import OverlayRoot from './components/OverlayRoot'
 
