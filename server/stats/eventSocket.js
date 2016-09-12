@@ -36,7 +36,7 @@ class EventSocket extends EventEmitter {
 	// 
 	// Returns WebSocket client.
 	_connect() {
-		let w = new ws(`wss://push.planetside2.com/streaming?environment=ps2&service-id=s:PomfDBOX`)
+		let w = new ws(`wss://push.planetside2.com/streaming?environment=ps2&service-id=s:${process.env.SERVICE_ID}`)
 
 		log.notice('connected to event socket')
 

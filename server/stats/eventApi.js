@@ -2,7 +2,7 @@ const superagent = require('superagent-promise')(require('superagent'), Promise)
 const log = new (require('../logger'))('server/stats/eventApi')
 const { OrderedSet } = require('immutable')
 
-const ENDPOINT = 'https://census.daybreakgames.com/s:PomfDBOX/get/ps2:v2'
+const ENDPOINT = `https://census.daybreakgames.com/s:${process.env.SERVICE_ID}/get/ps2:v2`
 
 ////
 // An EventAPI pulls data from the Census API for stats updates rather than using the websocket.
@@ -66,11 +66,10 @@ class EventAPI {
 
 
 	////
-	// @static
 	// Gets Daybreak's representation of a timestamp.
 	//
 	// Returns int
-	currentTime() {
+	static currentTime() {
 		return Math.floor(Date.now() / 1000)
 	}
 

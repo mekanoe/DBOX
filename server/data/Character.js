@@ -1,7 +1,7 @@
 const superagent = require('superagent-promise')(require('superagent'), Promise)
 const log = new (require('../logger'))('server/data/Character')
 
-const ENDPOINT = 'http://census.daybreakgames.com/get/ps2:v2/character/?character_id='
+const ENDPOINT = `http://census.daybreakgames.com/s:${process.env.SERVICE_ID}/get/ps2:v2/character/?character_id=`
 
 ////
 // Outputs Planetmans data
