@@ -40,10 +40,12 @@ export function startEventListener(id) {
 export function startTimer() {
 	return (dispatch, getState) => {
 		let intv = setInterval(() => {
-			let { overlayMatchData: { secondsLeft } } = getState()
+			let { overlayMatchData: { secondsLeft, clockInterval } } = getState()
 			
 			if (secondsLeft > 0) {
 				dispatch({ type: 'md:set_round_seconds_left', data: { secondsLeft: secondsLeft-1 } })
+			} else {
+				clearInterval(clockInterval)
 			}
 
 		}, 1000)
