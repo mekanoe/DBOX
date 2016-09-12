@@ -43,6 +43,8 @@ class Dbox {
     		max: 3000,
     		silent: true,
 		})
+		
+		this.ctx.stats = new (require('./stats/StatsService'))()
 	}
 
 
@@ -52,6 +54,8 @@ class Dbox {
 	_mountRoutes() {
 
 		this._route('./overlay', '/o')
+
+		this._route('./api/streams')
 
 		// Only mount test routes in development.
 		if (process.env.NODE_ENV === 'development') this._route('./api/test')
