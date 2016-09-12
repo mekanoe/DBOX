@@ -11,7 +11,7 @@ import {
 	browserHistory 
 } from 'react-router'
 
-class Forge extends Component {
+class DBoxPanel extends Component {
 	constructor(props) {
 		super(props)
 	}
@@ -29,4 +29,4 @@ class Forge extends Component {
 	}
 }
 
-render(<Forge />, document.querySelector('.container'))
+render(<DboxPanel />, document.querySelector('.container'))
