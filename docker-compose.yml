@@ -11,7 +11,7 @@ services:
             - ".data/redis:/data"
 
     rethink:
-        image: rethinkdb:2
+        image: rethinkdb:2.3.5
         container_name: dbox-dev-rethink
         ports:
             - "8080:8080"
