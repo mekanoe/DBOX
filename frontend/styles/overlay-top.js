@@ -63,6 +63,12 @@ const styles = {
 	rightRed: { color: v.red },
 	rightBlue: { color: v.blue },
 	rightPurple: { color: v.purple },
+
+	clock: {
+		minWidth: '3em',
+		display: 'inline-block',
+		textAlign: 'center',
+	},
 }
 
 export default styles

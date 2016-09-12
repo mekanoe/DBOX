@@ -50,7 +50,7 @@ class OverlayTopLeft extends Component {
 	render() {
 		return <div style={[styles.innerSides, styles.innerLeft]} onClick={this.props.actions.startTimer}>
 			<div style={styles.innerSidesContent}>ROUND {this.props.overlayMatchData.round}</div>
-			<div style={styles.innerSidesContent}>O {this._renderTime()}</div>
+			<div style={styles.innerSidesContent}>O&nbsp;<div style={styles.clock}>{this._renderTime()}</div></div>
 
 			<div style={styles.innerSpacer}/>
 		</div>
