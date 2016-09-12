@@ -1,4 +1,5 @@
 'use strict'
+require('dotenv').config({silent: true});
 
 /*
 
@@ -30,7 +31,7 @@ const webpackStream = require('webpack-stream')
 const WebpackServer = require('webpack-dev-server')
 
 const paths = {
-    browser_js: 'src/frontend/**/*.+(js|jsx)',
+    browser_js: 'frontend/**/*.+(js|jsx)',
 }
 
 const babelrc = fs.readFileSync('./.babelrc');
@@ -43,8 +44,8 @@ const hashOptions = {
     template: '<%= name %>.<%= hash %><%= ext %>'
 };
 
-const host = argv.host || 'localhost'
-const port = argv.port || 3030
+const host = (argv.host || process.env.DEV_HOST) || 'localhost'
+const port = (argv.port || process.env.DEV_PORT) || 3030
 
 const productionLoaders = {
     loaders: [
@@ -71,7 +72,7 @@ const devLoaders = {
 
 const webpackConfig = {
     cache: true,
-    context: __dirname + '/src/frontend',
+    context: __dirname + '/frontend',
     entry: {
         'DboxOverlay': './DboxOverlay.jsx',
         'DboxPanel': './DboxPanel.jsx'
@@ -133,7 +134,7 @@ gulp.task('index:build', cb => {
 })
 
 gulp.task('index:build:overlay', cb => {
-    return gulp.src('./src/frontend/overlay.html.tmpl')
+    return gulp.src('./frontend/overlay.html.tmpl')
         .pipe(mustache({
             dev: process.env.NODE_ENV !== 'production',
             devserverHost: host,
@@ -144,7 +145,7 @@ gulp.task('index:build:overlay', cb => {
 })
 
 gulp.task('index:build:panel', cb => {
-    return gulp.src('./src/frontend/panel.html.tmpl')
+    return gulp.src('./frontend/panel.html.tmpl')
         .pipe(mustache({
             dev: process.env.NODE_ENV !== 'production',
             devserverHost: host,

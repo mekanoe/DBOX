@@ -1,6 +1,6 @@
 const { debug } = require('yargs').argv
 
-// logger template
+// logger template//
 // const log = new (require('../logger'))('server/thing')
 
 class Logger {

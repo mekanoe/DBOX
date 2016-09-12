@@ -51,7 +51,7 @@ class Dbox {
 	// Mount the routes! Makes heavy use of Dbox#_route.
 	_mountRoutes() {
 
-		//
+		this._route('./overlay', '/o')
 
 		// Only mount test routes in development.
 		if (process.env.NODE_ENV === 'development') this._route('./api/test')
