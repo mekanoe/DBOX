@@ -108,7 +108,8 @@ gulp.task('js:webpack', cb => {
             __DEVELOPMENT__: false,
             __DEVTOOLS__: false,  // <-------- DISABLE redux-devtools HERE
             'process.env': {
-                'NODE_ENV': JSON.stringify('production')
+                'NODE_ENV': JSON.stringify('production'),
+                'CSRF_KEY': JSON.stringify(process.env.CSRF_KEY),
             }
         })
     )
@@ -181,6 +182,9 @@ gulp.task("webpack-dev-server", function(cb) {
             __SERVER__: false,
             __DEVELOPMENT__: true,
             __DEVTOOLS__: true,
+            'process.env': {
+                'CSRF_KEY': JSON.stringify(process.env.CSRF_KEY),
+            },
         })
     );
 

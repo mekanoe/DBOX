@@ -95,6 +95,16 @@ if (argv.create || argv.all) {
 		console.log('> Creating events index: timestamp')
 		return r.table('events').indexCreate('timestamp').run()
 		
+	}).then(() => {
+
+		console.log('> Creating table: auth_tokens')
+		return r.tableCreate('auth_tokens').run()
+
+	}).then(() => {
+
+		console.log('> Creating auth_tokens index: eventID')
+		return r.table('auth_tokens').indexCreate('eventID').run()
+
 	// }).then(() => {
 
 	// 	if (argv.seed !== false) {

@@ -1,4 +1,6 @@
 const log = new (require('./logger'))('server/Dbox')
+const cofs = require('co-fs')
+const fs = require('fs')
 
 
 ////
@@ -45,7 +47,8 @@ class Dbox {
     		silent: true,
 		})
 		
-		this.ctx.stats = new (require('./stats/StatsService'))()
+		this.ctx.stats = new (require('./stats/StatsService'))(this.ctx)
+		this.ctx.auth = new (require('./AuthService'))(this.ctx)
 	}
 
 
@@ -53,15 +56,35 @@ class Dbox {
 	// @internal
 	// Mount the routes! Makes heavy use of Dbox#_route.
 	_mountRoutes() {
-		this._route('./overlay', '/o')
 
-		this._route('./api/streams')
+		// Mount middleware
+		this.router.use(this.ctx.auth.cookieMiddleware())
+		this.router.use(this.ctx.auth.csrfMiddleware())
 
 		// Only mount test routes in development.
 		if (process.env.NODE_ENV === 'development') this._route('./api/test')
 
-		// Default to panel if nothing else captured so we can serve a 404 as well.
-		this._route('./panel', '/')
+		// API
+		this._route('./api/streams')
+
+		// Pages
+		this._route('./pages/overlay', '/o')
+		this._route('./pages/auth', '/~')
+
+		// Default to panel if nothing else captured...
+		this._route('./pages/panel', '/')
+
+		// And serve ^this for 404 as well
+		this.router.use(function *notFound(next){
+			yield next
+
+			if (this.status !== 404) {
+				return
+			}
+			this.body = yield cofs.readFile(fs.realpathSync('dist/frontend/panel.html'), 'utf8')
+			
+		})
+
 	}
 
 
@@ -87,8 +110,12 @@ class Dbox {
 					prefix = modulePath.substr(1)
 				} else {
 					// But wait, that wasn't true? Don't be silly.
-					throw `module ${modulePath} couldn't be converted to route path and none was given`
+					throw new Error(`module ${modulePath} couldn't be converted to route path and none was given`)
 				}
+			}
+
+			if (module.routes === undefined) {
+				throw new Error(`module ${modulePath} isn't a koa-router instance`)
 			}
 		} catch(e) {
 			log.warn(`module ${modulePath} failed to load. replacing ${prefix} with error page.`, e)
