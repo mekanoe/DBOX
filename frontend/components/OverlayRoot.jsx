@@ -36,6 +36,7 @@ export default class OverlayRoot extends Component {
 	componentDidMount() {
 		// TODO: socket listener
 		// startListening
+		this.props.actions.startListening()
 	}
 
 	render() {

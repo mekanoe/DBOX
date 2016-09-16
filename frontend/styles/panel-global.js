@@ -1,6 +1,10 @@
 const styles = {
 	'body': {
-		backgroundColor:'#13141a'
+		backgroundColor:'#13141a',
+		userSelect: 'none',
+	},
+	'input': {
+		userSelect: 'text'
 	}
 }
 

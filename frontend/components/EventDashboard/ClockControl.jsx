@@ -7,24 +7,26 @@ import shouldPureComponentUpdate from 'react-pure-render/function'
 import edStyle from '../../styles/EventDashboard'
 const style = edStyle.clock
 
-// import * as OverlayActions from '../stores/overlay'
-// import styles from '../styles/overlay'
-
-// import OverlayTop from './OverlayTop'
+import * as DashboardActions from '../../stores/dashboard'
+import * as MatchActions from '../../stores/match'
 
 const mapState = (state) => {
-	return {}
+	return {
+		...state.match,
+		...state.dashboard,
+	}
 }
 
 const actionMap = (dispatch) => {
 	return {
 		actions: {
-			endRound: ()=>{},
-			clockStart: ()=>{},
+			clockEditMode: ()=>{},
 			clockStop: ()=>{},
 			clockReset: ()=>{},
 			clockPause: ()=>{},
 			clockUnpause: ()=>{},
+			...bindActionCreators(DashboardActions, dispatch),
+			...bindActionCreators(MatchActions, dispatch),
 		}
 	}
 }
@@ -37,23 +39,31 @@ export default class ClockControl extends Component {
 	render() {
 
 		return <div style={style.root}>
+				<div>{this._renderRound()}</div>
 				<div style={style.time}>{this._renderTime()}</div>
-				<div style={style.actionsBar} className="row">
+				<div style={style.actionsBar}>
 					{this._renderActions()}
 				</div>
 		</div>
 	}
 
+	_renderRound() {
+		let { clockState, round } = this.props
+
+		return <div style={style.roundBar}>
+			<div style={style.round.info}>Round {round} ({clockState})</div>
+			<div style={style.round.edit}><i className="fa fa-pencil" />&nbsp;&nbsp;<i className="fa fa-step-forward" onClick={this.props.actions.clockNextRound} /></div>
+		</div>
+	}
+
 	_renderActions() {
 		let actions = []
-		let clockState = 'stopped'
-		let secondsLeft = 900
+		let { secondsLeft, clockState } = this.props
 
 		switch(clockState) {
 			case 'stopped':
 				actions.push(<button key="stopped-start" disabled={secondsLeft === 0} onClick={this.props.actions.clockStart} style={style.actions.start}>Start</button>)
 				actions.push(<button key="stopped-reset" onClick={this.props.actions.clockReset} style={style.actions.reset}>Reset</button>)
-				actions.push(<button key="stopped-end" onClick={this.props.actions.endRound} style={style.actions.endRound}>End Round</button>)
 				break
 
 			case 'paused':
@@ -61,10 +71,10 @@ export default class ClockControl extends Component {
 				actions.push(<button key="paused-reset" onClick={this.props.actions.clockReset} style={style.actions.reset}>Reset</button>)
 				break
 
-			case 'running':
+			case 'started':
 				actions.push(<button key="running-pause" onClick={this.props.actions.clockPause} style={style.actions.pause}>Pause</button>)
 				actions.push(<button key="running-stop" onClick={this.props.actions.clockStop} style={style.actions.stop}>Stop</button>)
-				break;
+				break
 
 		}
 
@@ -72,7 +82,7 @@ export default class ClockControl extends Component {
 	}
 
 	_renderTime() {
-		let secondsLeft  = 900
+		let secondsLeft  = this.props.secondsLeft
 
 		if (secondsLeft < 0) {
 			secondsLeft = 0

@@ -1,23 +1,24 @@
-import superagent from 'superagent'
+import api from '../Api'
+import { routeActions } from 'react-router-redux'
 import { Map } from 'immutable'
 import io from 'socket.io-client'
 
 import * as matchActions from './match'
 
 const initialState = {
-	viewMode: '21:9',
-
-	titleText: 'Harasser Derby II',
+	overlayURL: 'https://dbox.harasse.rs/o/1',
+	overlayID: 1,
+	overlayRatio: '16:9',
 }
 
 export default function reducer(state = initialState, {type, data}) {
 	switch(type) {
 
-		case 'o:set_title':
+		case 'd:update_o_ratio':
 
 			return {
 				...state,
-				titleText: data.text
+				overlayRatio: data.ratio
 			}
 
 		default:
@@ -27,17 +28,26 @@ export default function reducer(state = initialState, {type, data}) {
 	}
 }
 
-export function startListening() {
-	return (dispatch) => {
+export function changeOverlayRatio(evt) {
+	return function(dispatch, getState) {
+		let { dashboard: { overlayID } } = getState()
 
-		let url = location.pathname.split('/')
-		let id = url[url.length-1]
+		api.overlay.patch(overlayID, { ratio: evt.target.value }).then((d) => {
+			dispatch({ type: 'd:update_o_ratio', data: { ratio: d.body.payload.ratio } })
+		}, (err) => {
+			throw err
+		})
+
+	}
+}
+
+export function startListening(id) {
+	return function(dispatch, getState) {
 
 		dispatch(matchActions.clockInit())
 
-		let socket = io(`/match/${id}`, { transports: ['websocket'] })
+		io(`/match/${id}`, { transports: ['websocket'] }).on('event', (evt) => {
 
-		socket.on('event', (evt) => {
 			console.log('got event', evt)
 
 			let { type, data } = evt
@@ -59,7 +69,7 @@ export function startListening() {
 							dispatch(matchActions.clockStopTimer())
 							break
 					}
-					break
+				break
 
 				case 'clock-sync':
 
@@ -73,9 +83,15 @@ export function startListening() {
 
 					break
 
+				default:
+
+					console.log('unknown event', evt)
+
 			}
+
+		}).on('event-raw', (evt) => {
+			console.log('event raw:', evt)
 		})
 
 	}
 }
-

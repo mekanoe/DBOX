@@ -87,8 +87,13 @@ if (argv.create || argv.all) {
 
 	}).then(() => {
 
-		console.log('> Creating events index: roundID')
-		return r.table('events').indexCreate('roundID').run()
+		console.log('> Creating events index: round')
+		return r.table('events').indexCreate('round').run()
+
+	}).then(() => {
+
+		console.log('> Creating events index: scoreEvent')
+		return r.table('events').indexCreate('scoreEvent').run()
 
 	}).then(() => {
 

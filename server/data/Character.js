@@ -9,7 +9,7 @@ const ENDPOINT = `http://census.daybreakgames.com/s:${process.env.SERVICE_ID}/ge
 // Arguments
 //   anon obj{services obj{redis ioredis#Client, r rethinkdbdash#Client}}
 class Character {
-	constructor({ services }) {
+	constructor(services) {
 		this.services = services
 	}
 

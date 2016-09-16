@@ -10,8 +10,8 @@ import styles from '../styles/overlay-top'
 
 const mapState = (state) => {
 	return {
-		overlay: state.overlay,
-		overlayMatchData: state.overlayMatchData,
+		...state.overlay,
+		...state.match,
 	}
 }
 
@@ -31,7 +31,7 @@ export default class OverlayTop extends Component {
 	render() {
 		return <div style={styles.root}>
 			<div style={styles.middle}>
-				<div style={styles.middleText}>{this.props.overlay.titleText}</div>
+				<div style={styles.middleText}>{this.props.titleText}</div>
 			</div>
 
 			<div style={styles.inner}>
@@ -49,7 +49,7 @@ class OverlayTopLeft extends Component {
 
 	render() {
 		return <div style={[styles.innerSides, styles.innerLeft]} onClick={this.props.actions.startTimer}>
-			<div style={styles.innerSidesContent}>ROUND {this.props.overlayMatchData.round}</div>
+			<div style={styles.innerSidesContent}>ROUND {this.props.round}</div>
 			<div style={styles.innerSidesContent}>O&nbsp;<div style={styles.clock}>{this._renderTime()}</div></div>
 
 			<div style={styles.innerSpacer}/>
@@ -57,7 +57,7 @@ class OverlayTopLeft extends Component {
 	}
 
 	_renderTime() {
-		let { secondsLeft } = this.props.overlayMatchData
+		let { secondsLeft } = this.props
 
 		if (secondsLeft < 0) {
 			secondsLeft = 0
@@ -90,9 +90,9 @@ class OverlayTopRight extends Component {
 	render() {
 		return <div style={styles.innerSides}>
 			<div style={styles.innerSpacer}/>
-			<div style={[styles.innerSidesContent,styles.rightRed]}>O {this.props.overlayMatchData.roundScores.get('3')}</div>
-			<div style={[styles.innerSidesContent,styles.rightPurple]}>O {this.props.overlayMatchData.roundScores.get('1')}</div>
-			<div style={[styles.innerSidesContent,styles.rightBlue]}>O {this.props.overlayMatchData.roundScores.get('2')}</div>
+			<div style={[styles.innerSidesContent,styles.rightRed]}>O {this.props.roundScores.get('3')}</div>
+			<div style={[styles.innerSidesContent,styles.rightPurple]}>O {this.props.roundScores.get('1')}</div>
+			<div style={[styles.innerSidesContent,styles.rightBlue]}>O {this.props.roundScores.get('2')}</div>
 
 		</div>
 	}

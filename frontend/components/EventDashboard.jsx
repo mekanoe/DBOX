@@ -5,34 +5,37 @@ import Radium from 'radium'
 import shouldPureComponentUpdate from 'react-pure-render/function'
 
 import ClockControl from './EventDashboard/ClockControl'
+import EventMeta from './EventDashboard/EventMeta'
+import ScoreCard from './EventDashboard/ScoreCard'
 
-// import * as OverlayActions from '../stores/overlay'
-// import styles from '../styles/overlay'
+import * as dashboardActions from '../stores/dashboard'
+import * as matchActions from '../stores/match'
 
-// import OverlayTop from './OverlayTop'
+const mapState = ({match, dashboard}) => {
+	return {
+		match,
+		dashboard,
+	}
+}
 
-// const mapState = (state) => {
-// 	return {
-// 		...state.overlay,
-// 	}
-// }
+const actionMap = (dispatch) => {
+	return {
+		actions: {
+			match: bindActionCreators(matchActions, dispatch),
+			dashboard: bindActionCreators(dashboardActions, dispatch),
+		}
+	}
+}
 
-// const actionMap = (dispatch) => {
-// 	return {
-// 		actions: {
-// 			...bindActionCreators(OverlayActions, dispatch),
-// 		}
-// 	}
-// }
-
-// @connect(mapState, actionMap)
+@connect(mapState, actionMap)
 @Radium
 export default class EventDashboard extends Component {
 	shouldComponentUpdate = shouldPureComponentUpdate
 
 	componentWillMount() {
 		// this.props.actions.fetchData(this.props.params.eventID)
-		// this.props.actions.startListening(this.props.params.eventID)
+		this.props.actions.dashboard.startListening(this.props.params.eventID)
+		this.props.actions.match.getMatchInfo(this.props.params.eventID)
 	}
 
 	componentWillUnmount() {
@@ -40,8 +43,9 @@ export default class EventDashboard extends Component {
 	}
 
 	render() {
-		return <div style={{display: 'flex'}}>
-				<div style={{flex:8}}></div>
+		return <div style={{display: 'flex', padding: 5}}>
+				<EventMeta />
+				<ScoreCard />
 				<ClockControl />
 		</div>
 	}

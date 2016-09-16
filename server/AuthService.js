@@ -1,4 +1,5 @@
 const log = new (require('./logger'))('server/AuthService')
+const crypto = require('crypto')
 
 const uuid = require('node-uuid')
 const jwt = require('jsonwebtoken')
@@ -73,21 +74,17 @@ class AuthService {
 				yield next
 			} else {
 
-				let csrf = this.req.headers.csrfToken
+				let csrf = this.req.headers['csrf-token']
+				log.info('headers', this.req.headers)
+				let expected = ''
 
 				if (csrf !== undefined) {
 
-					let {url, method, time} = jwt.verify(csrf, process.env.CSRF_KEY)
-					let now = Date.now()
+					let hash = crypto.createHash('sha384')
+					hash.update(JSON.stringify([process.env.CSRF_KEY,this.method,this.url]))
+					expected = hash.digest('base64')
 
-					if (
-						url === this.url && 
-						method === this.method &&
-						(   
-							time < now && 
-							time > now - process.env.CSRF_THRESHOLD 
-						)
-					) {
+					if (csrf === expected) {
 						yield next
 					}
 
@@ -96,14 +93,16 @@ class AuthService {
 				log.warn('csrf_failed', {
 					url: this.url,
 					method: this.method,
-					token: csrf
+					got: csrf,
+					expected: expected
 				})
 
 				if (process.env.CSRF_BYPASS) {
 					yield next
 				} else {
 					this.status = 403
-					this.body = { error: 'csrf_failed' }					
+					this.body = { error: 'csrf_failed' }
+					return				
 				}
 			}
 		}

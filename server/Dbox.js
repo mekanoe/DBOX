@@ -20,6 +20,10 @@ class Dbox {
 		// Give API access to the websocket
 		ctx.io = io
 
+		// Some warning logs
+		if (process.env.DEBUG) log.warn('debug mode is on')
+		if (process.env.SKIP_AUTH) log.warn('SECURITY WARNING: auth is being bypassed')
+
 		this._mountServices()
 		this._mountRoutes()
 	}
@@ -49,6 +53,9 @@ class Dbox {
 		
 		this.ctx.stats = new (require('./stats/StatsService'))(this.ctx)
 		this.ctx.auth = new (require('./AuthService'))(this.ctx)
+		this.ctx.time = new (require('./TimeService'))(this.ctx)
+		this.ctx.chars = new (require('./data/Character'))(this.ctx)
+		this.ctx.match = new (require('./MatchService'))(this.ctx)
 	}
 
 
@@ -59,13 +66,15 @@ class Dbox {
 
 		// Mount middleware
 		this.router.use(this.ctx.auth.cookieMiddleware())
-		this.router.use(this.ctx.auth.csrfMiddleware())
+		//this.router.use(this.ctx.auth.csrfMiddleware())
 
 		// Only mount test routes in development.
 		if (process.env.NODE_ENV === 'development') this._route('./api/test')
 
 		// API
 		this._route('./api/streams')
+		this._route('./api/match')
+		this._route('./api/overlay')
 
 		// Pages
 		this._route('./pages/overlay', '/o')
@@ -81,7 +90,14 @@ class Dbox {
 			if (this.status !== 404) {
 				return
 			}
-			this.body = yield cofs.readFile(fs.realpathSync('dist/frontend/panel.html'), 'utf8')
+
+			if (this.url.startsWith('/api')) {
+				if (this.body === undefined) this.body = {error: 'not found'}
+			} else {
+				this.body = yield cofs.readFile(fs.realpathSync('dist/frontend/panel.html'), 'utf8')
+				this.status = 404
+			}
+
 			
 		})
 
