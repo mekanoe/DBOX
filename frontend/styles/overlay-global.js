@@ -1,6 +1,6 @@
 const globalStyles = {
 	'body': {
-		fontFamily: '"Lemon/Milk"',
+		fontFamily: '"LemonMilk22"',
 		backgroundColor: 'transparent',
 		margin: 0,
 		position: 'relative',

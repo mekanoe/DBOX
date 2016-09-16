@@ -1,5 +1,6 @@
 const superagent = require('superagent-promise')(require('superagent'), Promise)
 const log = new (require('../logger'))('server/data/Character')
+const { Map } = require('immutable')
 
 const ENDPOINT = `http://census.daybreakgames.com/s:${process.env.SERVICE_ID}/get/ps2:v2/character/?character_id=`
 
@@ -28,7 +29,7 @@ class Character {
 				if (err === 'not found') {
 					this._getIdFromApi(id).then((data) => {
 						if (data === undefined || data === null) {
-							reject('not found')
+							reject(new Error('not found'))
 						} else {
 							process.nextTick(() => {this._cacheId(id, data)})
 							resolve(data)
@@ -38,6 +39,39 @@ class Character {
 			})
 		})
 
+	}
+
+
+	////
+	// Injects names and factions into a VehicleDestroy event
+	//
+	// Arguments
+	//   evt Immutable#Map<VehicleDestroy>
+	injectVehicleDestroyEvent(evt) {
+		return new Promise((resolve, reject) => {
+			let nevt = Map(evt)
+
+			// inject victim name
+			this.byID(nevt.get('character_id')).then((char) => {
+
+				nevt = nevt.set('character_name', char.name.first)
+						   .set('dbg_faction_id', nevt.get('faction_id'))
+						   .set('faction_id', char.faction_id)
+
+				// inject attacker
+				this.byID(nevt.get('attacker_character_id')).then((charA) => {
+
+
+					nevt = nevt.set('attacker_character_name', charA.name.first)
+							   .set('attacker_faction_id', charA.faction_id)
+
+
+					resolve(nevt)
+
+				})
+
+			})
+		})
 	}
 
 

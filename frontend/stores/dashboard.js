@@ -77,11 +77,21 @@ export function startListening(id) {
 
 					break
 
+				case 'round-change':
+
+					dispatch({ type: 'm:round_change', data: { round: data.round } })
+
+					break
+
 				case 'score':
 
 					dispatch(matchActions.scoreIncrement(data.faction))
 
 					break
+
+				case 'VehicleDestroy':
+
+					dispatch({ type: 's:event', data: { event: data } })
 
 				default:
 

@@ -39,9 +39,28 @@ export default function reducer(state = initialState, {type, data}) {
 
 		case 'm:initial': 
 
+			let match = {
+				round: data.match.currentRound,
+				roundScores: Map(data.match.rounds[data.match.currentRound-1].scores),
+				matchScores: Map(data.match.overallScores),
+			}
+
+
 			return {
 				...state,
-				...data.match,
+				...match
+			}
+
+		case 'm:round_change':
+
+			let mrc = {
+				round: data.round,
+				roundScores: initialState.roundScores,
+			}
+
+			return {
+				...state,
+				...mrc,
 			}
 
 		case 'm:clock_state':

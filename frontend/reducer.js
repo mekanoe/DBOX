@@ -4,13 +4,13 @@ import { routeReducer } from 'react-router-redux'
 import dashboard from './stores/dashboard'
 import match from './stores/match'
 import overlay from './stores/overlay'
-import overlayMatchData from './stores/overlayMatchData'
+import stats from './stores/stats'
 
 export default combineReducers({
 	dashboard,
 	match,
 	overlay,
-	overlayMatchData,
-	
+	stats,
+		
 	routing: routeReducer,
 })

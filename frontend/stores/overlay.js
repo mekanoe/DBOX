@@ -73,6 +73,12 @@ export function startListening() {
 
 					break
 
+				case 'round-change':
+
+					dispatch({ type: 'm:round_change', data: { round: data.round } })
+
+					break
+
 			}
 		})
 

@@ -9,7 +9,7 @@ const styles = {
 		left: 0,
 
 		backgroundColor: v.white,
-		textShadow: `1px 1px 2px ${v.black}`
+		// textShadow: `1px 1px 2px ${v.black}`
 	},
 
 
@@ -69,6 +69,11 @@ const styles = {
 		display: 'inline-block',
 		textAlign: 'center',
 	},
+
+	clockImg: {
+		// boxShadow: `1px 1px 2px ${v.black}`
+
+	}
 }
 
 export default styles

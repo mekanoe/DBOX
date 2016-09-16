@@ -121,21 +121,14 @@ const styles = {
 			},
 			stop: {
 				...action,
-
-			},
-			pause: {
-				...action,
-
-			},
-			unpause: {
-				...action,
+				backgroundColor: '#200'
 
 			},
 			reset: {
 				...action,
 				backgroundColor: '#000'
 			},
-			endRound: {
+			nextRound: {
 				...action,
 				order: 9,
 				flex: '100%',
@@ -171,6 +164,40 @@ const styles = {
 				cursor: 'pointer',
 			}
 		},
+	},
+
+	table: {
+		root: {
+			...pane,
+			flex: '100%',
+		},
+
+		td: {
+			padding: '3px 5px'
+		},
+
+		head: {
+			backgroundColor: '#1c1e21'
+		},
+
+		event: {
+			scoreEvent: {
+				yes: {
+					backgroundColor: '#0f0'
+				},
+				no: {
+					backgroundColor: '#f00'
+				}
+			},
+			_player: {
+				width: '30em'
+			},
+			player: {
+				1: {backgroundColor: '#403'},
+				2: {backgroundColor: '#006'},
+				3: {backgroundColor: '#600'},
+			}
+		}
 	}
 }
 

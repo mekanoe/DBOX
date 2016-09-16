@@ -1,8 +1,15 @@
 const R = require('koa-router')()
-module.exports = R
 
 R.get('/:id', function *(next) {
 	this.app.context.io.of(`/match/${this.params.id}`).emit('heartbeat', {time: Date.now()})
+	let match = this.app.context.match.get(this.params.id)
+
+	if (match === null) {
+		this.status = 404
+	} else {
+		this.status = 200
+		this.body = match
+	}
 })
 
 .put('/:id', function *(next) {
@@ -17,8 +24,9 @@ R.get('/:id', function *(next) {
 
 	if (data.next) {
 
-		this.app.context.match.nextRound(id)
+		this.app.context.match.nextRound(this.params.id)
 
+		this.body = {'ok': true}
 	}
 
 })
@@ -73,3 +81,5 @@ R.get('/:id', function *(next) {
 	this.app.context.time.reset(this.params.id)
 	this.body = { ok: true }
 })
+
+module.exports = R

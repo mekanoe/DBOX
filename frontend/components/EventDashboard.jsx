@@ -6,6 +6,7 @@ import shouldPureComponentUpdate from 'react-pure-render/function'
 
 import ClockControl from './EventDashboard/ClockControl'
 import EventMeta from './EventDashboard/EventMeta'
+import EventTable from './EventDashboard/EventTable'
 import ScoreCard from './EventDashboard/ScoreCard'
 
 import * as dashboardActions from '../stores/dashboard'
@@ -43,10 +44,11 @@ export default class EventDashboard extends Component {
 	}
 
 	render() {
-		return <div style={{display: 'flex', padding: 5}}>
+		return <div style={{display: 'flex', padding: 5, flexWrap: 'wrap'}}>
 				<EventMeta />
 				<ScoreCard />
 				<ClockControl />
+				<EventTable />
 		</div>
 	}
 

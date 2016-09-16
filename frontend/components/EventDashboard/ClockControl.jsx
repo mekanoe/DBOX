@@ -66,13 +66,7 @@ export default class ClockControl extends Component {
 				actions.push(<button key="stopped-reset" onClick={this.props.actions.clockReset} style={style.actions.reset}>Reset</button>)
 				break
 
-			case 'paused':
-				actions.push(<button key="paused-unpause" onClick={this.props.actions.clockUnpause} style={style.actions.start}>Unpause</button>)
-				actions.push(<button key="paused-reset" onClick={this.props.actions.clockReset} style={style.actions.reset}>Reset</button>)
-				break
-
 			case 'started':
-				actions.push(<button key="running-pause" onClick={this.props.actions.clockPause} style={style.actions.pause}>Pause</button>)
 				actions.push(<button key="running-stop" onClick={this.props.actions.clockStop} style={style.actions.stop}>Stop</button>)
 				break
 

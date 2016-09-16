@@ -17,6 +17,7 @@ const io = _io(server, { transports: ['websocket'], wsEngine: 'uws' })
 // Body parser
 app.use(bodyParser())
 app.use(fileserve('./dist'))
+app.use(fileserve('./assets'))
 
 // Construct the Dbox!
 const D = new Dbox(router, io, app.context)

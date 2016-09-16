@@ -57,21 +57,12 @@ class MatchService {
 
 		stream.on('VehicleDestroy', (data) => {
 			log.debug('vd data', data)
-			io.of(`/match/${id}`).emit('event-raw', { type: 'VehicleDestroy', data })
-			
-			let scoreEvent = this._isScoreEvent(id, data)
-
-			chars.byID(data.get('attacker_character_id')).then((attacker) => {
-				let faction = attacker.faction_id
-				if (faction === data.get('faction_id')) {
-					// teamkills !== score event
-					log.warn('teamkill?', { attacker, victim_faction: data.get('faction_id') })
-					scoreEvent = false
-				}
+			chars.injectVehicleDestroyEvent(data).then((event) => {
+				let scoreEvent = this._isScoreEvent(id, event)
+				io.of(`/match/${id}`).emit('event', { type: 'VehicleDestroy', data: { event, scoreEvent } })
+				let faction = event.get('attacker_faction_id')
 
 				if (scoreEvent === true) {
-
-
 					io.of(`/match/${id}`).emit('event', { type: 'score', data: {faction: faction} })
 					
 					let match = this.matches.get(id)
@@ -80,14 +71,14 @@ class MatchService {
 					this.matches = this.matches.set(id, match)
 				}
 				
-				r.table('events').insert({ scoreEvent, event: data, attacker_faction_id: faction, matchID: id, round: this.matches.get(id).currentRound }).run().then((d) => {
+				r.table('events').insert({ scoreEvent, event: data, faction: faction, matchID: id, round: this.matches.get(id).currentRound }).run().then((d) => {
 					log.debug('event insert', d)
 				}).catch((err) => {
 					log.error('event insert failed', err)
 				})
 
 			}).catch((err) => {
-				log.error('vd char get error', err)
+				log.error('inject vd event error', err)
 			})
 
 		})
@@ -108,6 +99,24 @@ class MatchService {
 
 	}
 
+	nextRound(id) {
+		let match = this.matches.get(id)
+		match.rounds.push({scores: {1: 0,2: 0,3: 0}})
+		match.currentRound = match.currentRound + 1
+		this.matches = this.matches.set(id, match)
+		this.svc.time.reset(id)
+		this.svc.io.of(`/match/${id}`).emit('event', { type: 'round-change', data: { round: match.currentRound } })
+	}
+
+	get(id) {
+		if (!this.matches.has(id)) {
+			return null
+		}
+		let safeMatch = this.matches.get(id)
+		delete safeMatch.stream
+		return safeMatch
+	}
+
 	_isScoreEvent(id, data) {
 		let match = this.matches.get(id) 
 		if ( match.clockState === 'stopped' ) {
@@ -115,10 +124,15 @@ class MatchService {
 			return false
 		}
 
-		// if ( !SANCTIONED.includes(data.get('attacker_weapon_id')) ) {
-		// 	log.debug('score event false: unsanctioned', data.get('attacker_weapon_id'))
-		// 	return false
-		// }
+		if ( data.get('attacker_faction_id') === data.get('faction_id') ) {
+			log.debug('score event false: teamkill/suicide')
+			return false
+		}
+
+		if ( !SANCTIONED.includes(data.get('attacker_weapon_id')) ) {
+			log.debug('score event false: unsanctioned', data.get('attacker_weapon_id'))
+			return false
+		}
 
 		return true
 	}

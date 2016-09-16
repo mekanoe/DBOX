@@ -50,7 +50,7 @@ class OverlayTopLeft extends Component {
 	render() {
 		return <div style={[styles.innerSides, styles.innerLeft]} onClick={this.props.actions.startTimer}>
 			<div style={styles.innerSidesContent}>ROUND {this.props.round}</div>
-			<div style={styles.innerSidesContent}>O&nbsp;<div style={styles.clock}>{this._renderTime()}</div></div>
+			<div style={styles.innerSidesContent}><img style={styles.clockImg} src="/assets/img/clock.png" />&nbsp;<div style={styles.clock}>{this._renderTime()}</div></div>
 
 			<div style={styles.innerSpacer}/>
 		</div>
@@ -90,9 +90,9 @@ class OverlayTopRight extends Component {
 	render() {
 		return <div style={styles.innerSides}>
 			<div style={styles.innerSpacer}/>
-			<div style={[styles.innerSidesContent,styles.rightRed]}>O {this.props.roundScores.get('3')}</div>
-			<div style={[styles.innerSidesContent,styles.rightPurple]}>O {this.props.roundScores.get('1')}</div>
-			<div style={[styles.innerSidesContent,styles.rightBlue]}>O {this.props.roundScores.get('2')}</div>
+			<div style={[styles.innerSidesContent,styles.rightRed]}><img style={styles.scoreImg} src="/assets/img/tr.png" />&nbsp;{this.props.roundScores.get('3')}</div>
+			<div style={[styles.innerSidesContent,styles.rightPurple]}><img style={styles.scoreImg} src="/assets/img/vs.png" />&nbsp;{this.props.roundScores.get('1')}</div>
+			<div style={[styles.innerSidesContent,styles.rightBlue]}><img style={styles.scoreImg} src="/assets/img/nc.png" />&nbsp;{this.props.roundScores.get('2')}</div>
 
 		</div>
 	}
