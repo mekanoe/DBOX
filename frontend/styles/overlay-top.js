@@ -50,6 +50,12 @@ const styles = {
 	innerSidesContent: {
 		flex: 1,
 		textAlign: 'center',
+		opacity: 1,
+		transition: 'opacity 1s ease-in-out'
+	},
+
+	innerSidesContentHide: {
+		opacity: 0
 	},
 
 	innerSpacer: {

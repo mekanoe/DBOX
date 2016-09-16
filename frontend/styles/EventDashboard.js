@@ -46,6 +46,7 @@ const styles = {
 			...pane,
 			flex: 4,
 			display: 'flex',
+			flexWrap: 'wrap',
 		},
 		card: {
 			flex: 1,
@@ -66,6 +67,13 @@ const styles = {
 			bottom: 5,
 			right: 0,
 			left: 0,
+		},
+
+		nextRound: {
+			...action,
+			order: 9,
+			flex: '1 1 100%',
+			backgroundColor: '#328'
 		},
 
 		score: {

@@ -30,6 +30,13 @@ const actionMap = (dispatch) => {
 @Radium
 export default class ScoreCard extends Component {
 	render() {
+		let action = ""
+		if (this.props.clockState === 'stopped') {
+			action = <button key="stopped-next-round" onClick={this.props.actions.clockNextRound} style={style.nextRound}>Advance Round</button>
+		} else {
+			action = <button style={[style.nextRound,{backgroundColor:'#333'}]}>Waiting on Clock...</button>
+		}
+
 		return <div style={style.root}>
 			<div key="tr" style={[style.card, style.red]}>
 				<div style={style.cardHead}>TR</div>
@@ -47,6 +54,7 @@ export default class ScoreCard extends Component {
 				<div style={style.score}>{this.props.roundScores.get('2')}</div>
 				<div style={style.cardFoot}>({this.props.matchScores.get('2')})</div>
 			</div>
+				{action}
 		</div>
 	}
 }

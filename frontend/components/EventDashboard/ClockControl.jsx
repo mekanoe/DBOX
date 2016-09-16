@@ -52,7 +52,9 @@ export default class ClockControl extends Component {
 
 		return <div style={style.roundBar}>
 			<div style={style.round.info}>Round {round} ({clockState})</div>
+			{/* ADD THIS FOR v2
 			<div style={style.round.edit}><i className="fa fa-pencil" />&nbsp;&nbsp;<i className="fa fa-step-forward" onClick={this.props.actions.clockNextRound} /></div>
+			*/}
 		</div>
 	}
 

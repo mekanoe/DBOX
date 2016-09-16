@@ -33,7 +33,7 @@ const initialState = {
 }
 
 export default function reducer(state = initialState, {type, data}) {
-	console.log(type, data)
+	// console.log(type, data)
 
 	switch(type) {
 
@@ -213,6 +213,7 @@ export function clockInit() {
 			dispatch({ type: 'm:clock_state', data: { state: data.state } })
 			if ( data.state === 'started' ) {
 				dispatch(clockStartTimer())
+				dispatch({ type: 'o:hide_content', data: { hideContent: false } })
 			}
 		})
 
