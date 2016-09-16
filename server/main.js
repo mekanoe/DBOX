@@ -7,6 +7,7 @@ const app = koa()
 const _io = require('socket.io')
 const router = require('koa-router')()
 const bodyParser = require('koa-bodyparser')
+const fileserve = require('koa-static-folder')
 const Dbox = require('./Dbox')
 
 // Create the server and socket.io server
@@ -15,6 +16,7 @@ const io = _io(server, { transports: ['websocket'], wsEngine: 'uws' })
 
 // Body parser
 app.use(bodyParser())
+app.use(fileserve('./dist'))
 
 // Construct the Dbox!
 const D = new Dbox(router, io, app.context)

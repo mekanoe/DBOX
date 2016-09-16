@@ -57,6 +57,7 @@
     "koa-bodyparser": "^2.2.0",
     "koa-csrf": "^2.5.0",
     "koa-router": "^5.4.0",
+    "koa-static-folder": "^0.1.6",
     "moment": "^2.11.2",
     "moment-twitter": "0.2.0",
     "node-uuid": "^1.4.7",
