@@ -94,7 +94,7 @@ export function startListening() {
 
 				case 'round-winner':
 
-					dispatch(uiEventWinner(data.faction))
+					dispatch(uiEventWinner(data.winner))
 
 					break
 

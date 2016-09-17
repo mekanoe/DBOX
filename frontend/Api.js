@@ -18,6 +18,12 @@ const actions = {
 			return superagent.put(`/api/match/${matchID}`)
 		},
 
+		winner: { 
+			post: (matchID, data) => {
+				return superagent.post(`/api/match/${matchID}/winner`).send(data)
+			}
+		},
+
 		round: {
 
 			post: (matchID, data) => {

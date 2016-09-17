@@ -226,7 +226,7 @@ export function matchSelectWinner(winner) {
 
 		// we only do things if the clock is stopped
 		if ( clockState === 'stopped' ) {
-			
+			api.match.winner.post(matchID, { winner }).then(() => {})
 		}
 	}
 }

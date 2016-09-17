@@ -55,6 +55,7 @@ const styles = {
 			margin: 2.5,
 			position: 'relative',
 			height: '8em',
+			cursor: 'pointer',
 		},
 		cardHead: {
 			position: 'absolute',

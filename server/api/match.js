@@ -18,6 +18,13 @@ R.get('/:id', function *(next) {
 	this.app.context.match.start(this.params.id)
 })
 
+.post('/:id/winner', function *(next) {
+	this.app.context.io.of(`/match/${this.params.id}`).emit('heartbeat', {time: Date.now()})
+
+	this.app.context.io.of(`/match/${this.params.id}`).emit('event', {type: 'round-winner', data: { winner: this.request.body.winner }})
+	this.body = {ok: true}
+})
+
 .post('/:id/round', function *(next) {
 	this.app.context.io.of(`/match/${this.params.id}`).emit('heartbeat', {time: Date.now()})
 	let data = this.request.body
