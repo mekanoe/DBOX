@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "gulp": "gulp",
+    "gulp:dist": "NODE_ENV=production gulp dist",
     "start": "pm2 start server/main.js --name=dbox --watch; pm2 logs dbox -f",
     "migrate": "node utils/migrate.js --all"
   },

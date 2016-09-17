@@ -10,8 +10,22 @@ const styles = {
 
 		backgroundColor: v.white,
 		// textShadow: `1px 1px 2px ${v.black}`
+		transition: 'background-color 0.5s ease-in-out'
 	},
 
+	rootWin: {
+		tr: {
+			backgroundColor: v.redAlt,
+		},
+
+		nc: {
+			backgroundColor: v.blueAlt,
+		},
+
+		vs: {
+			backgroundColor: v.purpleAlt2,
+		},
+	},
 
 	middle: {
 		backgroundColor: v.black,
@@ -22,8 +36,26 @@ const styles = {
 		height: 81,
 		lineHeight: '77px',
 		fontSize: '49px',
-		zIndex: 1,
-		transform: 'perspective(77px) rotateX(-7deg)',
+		transform: 'perspective(77px) rotateX(-7deg) translateY(0)',
+		transition: 'transform 1s ease-in-out 0.5s, background-color 0.5s ease-in-out 1.5s'
+	},
+
+	middleAnim: {
+		transform: 'perspective(77px) rotateX(-7deg) translateY(-85px)',
+	},
+
+	titleColor: {
+		tr: {
+			backgroundColor: v.redAlt,
+		},
+
+		nc: {
+			backgroundColor: v.blueAlt,
+		},
+
+		vs: {
+			backgroundColor: v.purpleAlt,
+		},
 	},
 
 	middleText: {
@@ -37,7 +69,6 @@ const styles = {
 		left: 0,
 		height: 77,
 		display: 'flex',
-		zIndex: 0,
 		padding: '0 55px',
 	},
 
@@ -51,11 +82,15 @@ const styles = {
 		flex: 1,
 		textAlign: 'center',
 		opacity: 1,
-		transition: 'opacity 1s ease-in-out'
+		transition: 'opacity 1s ease-in-out, color 1s ease-in-out'
 	},
 
 	innerSidesContentHide: {
 		opacity: 0
+	},
+
+	innerSidesContentWhite: {
+		color: '#fff'
 	},
 
 	innerSpacer: {
@@ -79,7 +114,42 @@ const styles = {
 	clockImg: {
 		// boxShadow: `1px 1px 2px ${v.black}`
 
-	}
+	},
+
+	winGrowerInitial: {
+		transition: 'opacity 1s ease-in-out, transform 1s ease-in-out 0s',
+		transform: 'scaleX(0)',
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		left: 0,
+		height: 77,
+		width: 2000,
+		opacity: 1,
+		zIndex: 0
+	},
+
+	winGrowerActive: {
+		transform: 'scaleX(1)',
+	},
+
+	winGrowerFade: {
+		opacity: 0,
+	},
+
+	winGrowerColor: {
+		tr: {
+			backgroundColor: v.red,
+		},
+
+		nc: {
+			backgroundColor: v.blue,
+		},
+
+		vs: {
+			backgroundColor: v.purple,
+		},
+	},
 }
 
 export default styles

@@ -38,18 +38,18 @@ export default class ScoreCard extends Component {
 		}
 
 		return <div style={style.root}>
-			<div key="tr" style={[style.card, style.red]}>
+			<div key="tr" onClick={this.props.actions.matchSelectWinner.bind(null, 'tr')} style={[style.card, style.red]}>
 				<div style={style.cardHead}>TR</div>
 				<div style={style.score}>{this.props.roundScores.get('3')}</div>
 				<div style={style.cardFoot}>({this.props.matchScores.get('3')})</div>
 			</div>
-			<div key="vs" style={[style.card, style.purple]}>
+			<div key="vs" onClick={this.props.actions.matchSelectWinner.bind(null, 'vs')} style={[style.card, style.purple]}>
 				<div style={style.cardHead}>VS</div>
 				<div style={style.score}>{this.props.roundScores.get('1')}</div>
 				<div style={style.cardFoot}>({this.props.matchScores.get('1')})</div>
 
 			</div>
-			<div key="nc" style={[style.card, style.blue]}>
+			<div key="nc" onClick={this.props.actions.matchSelectWinner.bind(null, 'nc')} style={[style.card, style.blue]}>
 				<div style={style.cardHead}>NC</div>
 				<div style={style.score}>{this.props.roundScores.get('2')}</div>
 				<div style={style.cardFoot}>({this.props.matchScores.get('2')})</div>

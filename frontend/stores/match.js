@@ -219,3 +219,14 @@ export function clockInit() {
 
 	}
 }
+
+export function matchSelectWinner(winner) {
+	return function(dispatch, getState) {
+		let { match: { clockState, matchID } } = getState()
+
+		// we only do things if the clock is stopped
+		if ( clockState === 'stopped' ) {
+			
+		}
+	}
+}

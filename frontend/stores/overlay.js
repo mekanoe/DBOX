@@ -7,7 +7,12 @@ import * as matchActions from './match'
 const initialState = {
 	hideContent: true,
 	titleText: 'Harasser Derby II',
-
+	winGrowerActive: false,
+	winGrowerFade: false,
+	winGrowerFaction: 'tr',
+	middleUp: false,
+	whiteContent: false,
+	animRunning: false,
 }
 
 export default function reducer(state = initialState, {type, data}) {
@@ -25,6 +30,13 @@ export default function reducer(state = initialState, {type, data}) {
 			return {
 				...state,
 				hideContent: data.hideContent
+			}
+
+		case 'o:win_anim':
+
+			return {
+				...state,
+				...data
 			}
 
 		default:
@@ -80,6 +92,12 @@ export function startListening() {
 
 					break
 
+				case 'round-winner':
+
+					dispatch(uiEventWinner(data.faction))
+
+					break
+
 				case 'round-change':
 
 					dispatch({ type: 'm:round_change', data: { round: data.round } })
@@ -116,11 +134,84 @@ function uiEventHideDelay() {
 
 function uiEventHideDelayOnZero() {
 	return function(dispatch, getState) {
-		let { match: { secondsLeft } } = getState()
+		let { match: { secondsLeft }, overlay: { animRunning } } = getState()
 
-		if (secondsLeft === 0) {
+		if (secondsLeft === 0 && animRunning === false) {
 			console.log('hiding in 60 seconds because zero')
 			dispatch(uiEventHideDelay())
 		} 
 	}
+}
+
+
+//
+// Chicken Dinner Animations
+//
+export function uiEventWinner(winner) {
+	return function(dispatch) {
+
+		dispatch({ type: 'o:win_anim', data: {
+			middleUp: true,
+			winGrowerActive: true,
+			winGrowerFade: false,
+			winGrowerFaction: winner,
+			whiteContent: true,
+			animRunning: true,
+		}})
+
+		setTimeout(() => {
+			dispatch({ type: 'o:win_anim', data: {
+				middleUp: false,
+				winGrowerActive: true,
+				winGrowerFade: false,
+				titleText: `${winner.toUpperCase()} WINS`,
+			}})
+
+			setTimeout(() => {
+				dispatch({ type: 'o:win_anim', data: {
+					middleUp: true,
+					winGrowerActive: true,
+					winGrowerFade: false,
+				}})
+
+				setTimeout(() => {
+					dispatch({ type: 'o:win_anim', data: {
+						middleUp: false,
+						winGrowerActive: true,
+						winGrowerFade: false,
+						titleText: initialState.titleText,
+					}})
+					setTimeout(() => {
+						dispatch({ type: 'o:win_anim', data: {
+							middleUp: false,
+							winGrowerActive: true,
+							winGrowerFade: false,
+						}})
+						setTimeout(() => {
+							dispatch({ type: 'o:win_anim', data: {
+								middleUp: false,
+								winGrowerActive: true,
+								winGrowerFade: true,
+								hideContent: true,
+							}})
+							setTimeout(() => {
+								dispatch({ type: 'o:win_anim', data: {
+									middleUp: false,
+									whiteContent: false,
+									winGrowerActive: false,
+									winGrowerFade: false,
+									animRunning: false,
+								}})
+							}, 1000)
+						}, 1000)
+					}, 30000)
+				}, 1750)
+			}, 10000)
+		}, 1500)
+	}
+}
+
+
+window.uiAnim = {
+	uiEventWinner
 }
