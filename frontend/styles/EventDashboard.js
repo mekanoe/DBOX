@@ -38,6 +38,10 @@ const styles = {
 			padding: '15px 10px',
 			color: '#fff',
 			backgroundColor: '#484d51'
+		},
+		button: {
+			...action,
+			backgroundColor: '#484d51'
 		}
 	},
 

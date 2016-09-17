@@ -42,4 +42,9 @@ R.patch('/:id', function *(next) {
 		return
 	})
 
-})	
+})
+
+.put('/:id', function *(next) {
+	this.app.context.io.of(`/match/${this.params.id}`).emit('reload')
+	this.body = null
+})

@@ -5,6 +5,9 @@ const actions = {
 	overlay: {
 		patch: (overlayID, data) => {
 			return superagent.patch(`/api/overlay/${overlayID}`).send(data)
+		},
+		reload: (overlayID, data) => {
+			return superagent.put(`/api/overlay/${overlayID}`).send(data)
 		}
 	},
 

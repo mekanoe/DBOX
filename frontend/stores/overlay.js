@@ -105,6 +105,8 @@ export function startListening() {
 					break
 
 			}
+		}).on('reload', () => {
+			window.location.reload()
 		})
 
 	}

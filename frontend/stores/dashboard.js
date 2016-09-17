@@ -41,6 +41,17 @@ export function changeOverlayRatio(evt) {
 	}
 }
 
+export function reloadOverlays() {
+	return function(dispatch, getState) {
+		let { match: { matchID } } = getState()
+
+		api.overlay.reload(matchID).then((d) => {}, (err) => {
+			throw err
+		})
+
+	}
+}
+
 export function startListening(id) {
 	return function(dispatch, getState) {
 

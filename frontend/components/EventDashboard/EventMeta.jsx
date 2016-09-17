@@ -41,14 +41,7 @@ export default class EventMeta extends Component {
 					value={this.props.overlayURL} />
 			</div>
 			<div style={{marginTop: 5}}>
-				<b>Overlay Aspect Ratio</b>&nbsp;&nbsp;
-				<select onChange={this.props.actions.changeOverlayRatio} value={this.props.overlayRatio}>
-					<option value="16:9">16:9</option>
-					<option value="21:9">21:9</option>
-				</select>
-			</div>
-			<div style={{marginTop: 5}}>
-				
+				<button onClick={this.props.actions.reloadOverlays} style={style.button}><i className="fa fa-refresh" /> Reload Overlays</button>
 			</div>
 		</div>
 	}
