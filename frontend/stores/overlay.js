@@ -121,10 +121,15 @@ function uiEventHide() {
 }
 
 function uiEventHideDelay() {
-	return function(dispatch) {
+	return function(dispatch, getState) {
 
 		console.log('hiding in 60 seconds')
 		setTimeout(() => {
+			if (getState().overlay.animRunning === true) {
+				console.log('not hiding, animation running')
+				return
+			}
+
 			console.log('hiding now')
 			dispatch({ type: 'o:hide_content', data: { hideContent: true } })
 		}, 60000)
@@ -134,9 +139,9 @@ function uiEventHideDelay() {
 
 function uiEventHideDelayOnZero() {
 	return function(dispatch, getState) {
-		let { match: { secondsLeft }, overlay: { animRunning } } = getState()
+		let { match: { secondsLeft } } = getState()
 
-		if (secondsLeft === 0 && animRunning === false) {
+		if (secondsLeft === 0) {
 			console.log('hiding in 60 seconds because zero')
 			dispatch(uiEventHideDelay())
 		} 
