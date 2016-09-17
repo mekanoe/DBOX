@@ -5,6 +5,9 @@ const styles = {
 	},
 	'input': {
 		userSelect: 'text'
+	},
+	'td': {
+		userSelect: 'text'
 	}
 }
 
