@@ -120,7 +120,7 @@ function uiEventHideDelayOnZero() {
 
 		if (secondsLeft === 0) {
 			console.log('hiding in 60 seconds because zero')
-			dispatch(uiEventHideDelay)
+			dispatch(uiEventHideDelay())
 		} 
 	}
 }
