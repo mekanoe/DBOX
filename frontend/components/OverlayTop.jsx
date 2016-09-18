@@ -66,6 +66,8 @@ class OverlayTopLeft extends Component {
 	shouldComponentUpdate = shouldPureComponentUpdate
 
 	render() {
+		let state = (this.props.useFrozen) ? this.props.frozenState : this.props
+
 		let ex = {}
 		if (this.props.hideContent) {
 			ex = styles.innerSidesContentHide
@@ -86,7 +88,7 @@ class OverlayTopLeft extends Component {
 		}
 
 		return <div style={[styles.innerSides, styles.innerLeft]} onClick={this.props.actions.startTimer}>
-			<div style={[styles.innerSidesContent, ex, ex2]}>ROUND {this.props.round}</div>
+			<div style={[styles.innerSidesContent, ex, ex2]}>ROUND {state.round}</div>
 			<div style={[styles.innerSidesContent, ex, ex2]}>
 				<div style={img} />&nbsp;
 				<div style={styles.clock}>{this._renderTime()}</div>
@@ -97,7 +99,9 @@ class OverlayTopLeft extends Component {
 	}
 
 	_renderTime() {
-		let { secondsLeft } = this.props
+		let state = (this.props.useFrozen) ? this.props.frozenState : this.props
+
+		let { secondsLeft } = state
 
 		if (secondsLeft < 0) {
 			secondsLeft = 0
@@ -128,6 +132,8 @@ class OverlayTopRight extends Component {
 	shouldComponentUpdate = shouldPureComponentUpdate
 
 	render() {
+		let state = (this.props.useFrozen) ? this.props.frozenState : this.props
+
 		let ex = {}
 		if (this.props.hideContent) {
 			ex = styles.innerSidesContentHide
@@ -179,9 +185,9 @@ class OverlayTopRight extends Component {
 
 		return <div style={styles.innerSides}>
 			<div style={styles.innerSpacer}/>
-			<div style={[styles.innerSidesContent,ex,styles.rightRed,ex2]}><div style={[imgBase,img['tr']]} />&nbsp;{this.props.roundScores.get('3')}</div>
-			<div style={[styles.innerSidesContent,ex,styles.rightPurple,ex2]}><div style={[imgBase,img['vs']]} />&nbsp;{this.props.roundScores.get('1')}</div>
-			<div style={[styles.innerSidesContent,ex,styles.rightBlue,ex2]}><div style={[imgBase,img['nc']]} />&nbsp;{this.props.roundScores.get('2')}</div>
+			<div style={[styles.innerSidesContent,ex,styles.rightRed,ex2]}><div style={[imgBase,img['tr']]} />&nbsp;{state.roundScores.get('3')}</div>
+			<div style={[styles.innerSidesContent,ex,styles.rightPurple,ex2]}><div style={[imgBase,img['vs']]} />&nbsp;{state.roundScores.get('1')}</div>
+			<div style={[styles.innerSidesContent,ex,styles.rightBlue,ex2]}><div style={[imgBase,img['nc']]} />&nbsp;{state.roundScores.get('2')}</div>
 
 		</div>
 	}

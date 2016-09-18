@@ -13,6 +13,8 @@ const initialState = {
 	middleUp: false,
 	whiteContent: false,
 	animRunning: false,
+	useFrozen: false,
+	frozenState: {}
 }
 
 export default function reducer(state = initialState, {type, data}) {
@@ -33,6 +35,7 @@ export default function reducer(state = initialState, {type, data}) {
 			}
 
 		case 'o:win_anim':
+		case 'o:set_freeze':
 
 			return {
 				...state,
@@ -70,12 +73,14 @@ export function startListening() {
 
 					switch(data.state) {
 						case 'started':
+							dispatch({ type: 'o:set_freeze', data: { useFrozen: false, frozenState: {} } })
 							dispatch(matchActions.clockStartTimer())
 							dispatch(uiEventShow())
 							break
 						case 'stopped':
 							dispatch(matchActions.clockStopTimer())
 							dispatch(uiEventHideDelayOnZero())
+							dispatch(possiblyFreezeState())
 							break
 					}
 					break
@@ -112,6 +117,16 @@ export function startListening() {
 	}
 }
 
+function possiblyFreezeState() {
+	return function(dispatch, getState) {
+		let { match } = getState()
+
+		if (match.secondsLeft === 0) {
+			dispatch({ type: 'o:set_freeze', data: { useFrozen: true, frozenState: match  } })
+		}
+	}
+}
+
 function uiEventShow() {
 	return { type: 'o:hide_content', data: { hideContent: false } }
 
@@ -125,7 +140,7 @@ function uiEventHide() {
 function uiEventHideDelay() {
 	return function(dispatch, getState) {
 
-		console.log('hiding in 60 seconds')
+		console.log('hiding in 30 seconds')
 		setTimeout(() => {
 			if (getState().overlay.animRunning === true) {
 				console.log('not hiding, animation running')
@@ -134,7 +149,7 @@ function uiEventHideDelay() {
 
 			console.log('hiding now')
 			dispatch({ type: 'o:hide_content', data: { hideContent: true } })
-		}, 60000)
+		}, 30000)
 
 	}
 }
