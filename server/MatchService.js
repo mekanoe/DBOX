@@ -19,7 +19,7 @@ class MatchService {
 		this.matches = Map()
 	}
 
-	start(id, opts = { world: 'Connery_1' }) {
+	start(id, opts = { world: 'Emerald_17' }) {
 		log.notice('started match', id)
 
 		let { r, redis, time, stats, io, chars } = this.svc
@@ -72,7 +72,7 @@ class MatchService {
 					this.matches = this.matches.set(id, match)
 				}
 				
-				r.table('events').insert({ scoreEvent, event: data, faction: faction, matchID: id, round: this.matches.get(id).currentRound }).run().then((d) => {
+				r.table('events').insert({ scoreEvent, event: data.toJS(), faction: faction, matchID: id, round: this.matches.get(id).currentRound }).run().then((d) => {
 					log.debug('event insert', d)
 				}).catch((err) => {
 					log.error('event insert failed', err)
@@ -107,6 +107,7 @@ class MatchService {
 		this.matches = this.matches.set(id, match)
 		this.svc.time.reset(id)
 		this.svc.io.of(`/match/${id}`).emit('event', { type: 'round-change', data: { round: match.currentRound } })
+		this.svc.r.table('events').insert({ round: match.currentRound, event: { type: 'roundChange', end: Math.floor(Date.now()/100) }}).run()
 	}
 
 	get(id) {
