@@ -33,6 +33,7 @@ export default class OverlayTop extends Component {
 		let rootAnim = {}
 		let titleAnim = {}
 		let middleAnim = {}
+		let middleFont = {}
 		if (this.props.winGrowerActive === true) {
 			winGrower.push(styles.winGrowerActive)
 			winGrower.push(styles.winGrowerColor[this.props.winGrowerFaction])
@@ -44,10 +45,15 @@ export default class OverlayTop extends Component {
 			winGrower.push(styles.winGrowerFade)
 			rootAnim = titleAnim = {}
 		}
+		if (this.props.useRootFont === true) {
+			middleFont = {fontFamily:'"LemonMilk22"'}
+		} else {
+			middleFont = {fontFamily:'True Lies'}
+		}
 
 		return <div style={[styles.root, rootAnim]}>
 			<div style={winGrower} />
-			<div style={[styles.middle, middleAnim, titleAnim]}>
+			<div style={[middleFont, styles.middle, middleAnim, titleAnim]}>
 				<div style={[styles.middleText]}>{this.props.titleText}</div>
 			</div>
 

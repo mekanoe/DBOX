@@ -24,4 +24,11 @@ class DboxOverlay extends Component {
 	}
 }
 
+// XSplit-specific secret sauce flag.
+try {
+	window.external.SetLocalProperty('prop:Browser60fps','1')
+} catch(e) {
+	console.log('probably not xsplit, hope OBS does 60fps. yolo.', e)
+}
+
 render(<DboxOverlay />, document.querySelector('.container'))

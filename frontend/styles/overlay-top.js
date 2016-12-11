@@ -8,7 +8,7 @@ const styles = {
 		right: 0,
 		left: 0,
 
-		backgroundColor: v.white,
+		backgroundColor: v.black,
 		// textShadow: `1px 1px 2px ${v.black}`
 		transition: 'background-color 0.5s ease-in-out'
 	},
@@ -28,7 +28,8 @@ const styles = {
 	},
 
 	middle: {
-		backgroundColor: v.black,
+		backgroundColor: v.darkGray,
+		// fontFamily: 'True Lies',
 		width: 680,
 		margin: '0 auto',
 		color: v.white,
@@ -102,7 +103,7 @@ const styles = {
 	},
 
 	rightRed: { color: v.red },
-	rightBlue: { color: v.blue },
+	rightBlue: { color: v.blueAlt2 },
 	rightPurple: { color: v.purple },
 
 	clock: {
