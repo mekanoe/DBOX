@@ -124,9 +124,9 @@ export function scoreIncrement(faction) {
 
 export function clockNextRound() {
 	return function(dispatch, getState) {
-		let { match: { matchID } } = getState()
+		let { dashboard: { overlayID } } = getState()
 
-		api.match.round.post(matchID, { next: true }).then((data) => {
+		api.match.round.post(overlayID, { next: true }).then((data) => {
 			console.log(data)
 		}, (err) => {
 			throw err
@@ -137,11 +137,11 @@ export function clockNextRound() {
 
 export function clockStart() {
 	return function(dispatch, getState) {
-		let { match: { matchID } } = getState()
+		let { dashboard: { overlayID } } = getState()
 
-		console.log('clockStart', matchID)
+		console.log('clockStart', overlayID)
 
-		api.match.clock.post(matchID, { state: 'started' }).then((data) => {
+		api.match.clock.post(overlayID, { state: 'started' }).then((data) => {
 			console.log(data.ok)
 		})
 
@@ -150,11 +150,11 @@ export function clockStart() {
 
 export function clockStop() {
 	return function(dispatch, getState) {
-		let { match: { matchID } } = getState()
+		let { dashboard: { overlayID } } = getState()
 
-		console.log('clockStop', matchID)
+		console.log('clockStop', overlayID)
 
-		api.match.clock.post(matchID, { state: 'stopped' }).then((data) => {
+		api.match.clock.post(overlayID, { state: 'stopped' }).then((data) => {
 			console.log(data.ok)
 		})
 	}
@@ -162,11 +162,11 @@ export function clockStop() {
 
 export function clockReset() {
 	return function(dispatch, getState) {
-		let { match: { matchID } } = getState()
+		let { dashboard: { overlayID } } = getState()
 
-		console.log('clockReset', matchID)
+		console.log('clockReset', overlayID)
 
-		api.match.clock.reset(matchID).then((data) => {
+		api.match.clock.reset(overlayID).then((data) => {
 			console.log(data.ok)
 		})
 	}
@@ -204,9 +204,9 @@ export function clockStopTimer() {
 export function clockInit() {
 	return function(dispatch, getState) {
 
-		let { match: { matchID } } = getState()
+		let { dashboard: { overlayID } } = getState()
 
-		api.match.clock.get(matchID).then((r) => {
+		api.match.clock.get(overlayID).then((r) => {
 			let data = r.body
 
 			dispatch({ type: 'm:clock_time', data: { secondsLeft: data.time } })
@@ -222,11 +222,11 @@ export function clockInit() {
 
 export function matchSelectWinner(winner) {
 	return function(dispatch, getState) {
-		let { match: { clockState, matchID } } = getState()
+		let { match: { clockState, overlayID } } = getState()
 
 		// we only do things if the clock is stopped
 		if ( clockState === 'stopped' ) {
-			api.match.winner.post(matchID, { winner }).then(() => {})
+			api.match.winner.post(overlayID, { winner }).then(() => {})
 		}
 	}
 }

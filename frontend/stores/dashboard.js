@@ -46,9 +46,9 @@ export function changeOverlayRatio(evt) {
 
 export function reloadOverlays() {
 	return function(dispatch, getState) {
-		let { match: { matchID } } = getState()
+		let { dashboard: { overlayID } } = getState()
 
-		api.overlay.reload(matchID).then((d) => {}, (err) => {
+		api.overlay.reload(overlayID).then((d) => {}, (err) => {
 			throw err
 		})
 
