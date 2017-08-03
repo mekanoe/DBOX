@@ -6,7 +6,7 @@ import * as matchActions from './match'
 
 const initialState = {
 	hideContent: true,
-	titleText: 'Harasser Derby II',
+	titleText: 'Harasser Derby III',
 	winGrowerActive: false,
 	winGrowerFade: false,
 	winGrowerFaction: 'tr',
