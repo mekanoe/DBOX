@@ -5,9 +5,12 @@ import io from 'socket.io-client'
 
 import * as matchActions from './match'
 
+let url = location.pathname.split('/')
+let id = url[url.length-1]
+
 const initialState = {
-	overlayURL: 'https://dbox.harasse.rs/o/1',
-	overlayID: 1,
+	overlayURL: 'https://dbox.harasse.rs/o/'+id,
+	overlayID: +id,
 	overlayRatio: '16:9',
 }
 
