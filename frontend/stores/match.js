@@ -222,7 +222,7 @@ export function clockInit() {
 
 export function matchSelectWinner(winner) {
 	return function(dispatch, getState) {
-		let { match: { clockState, overlayID } } = getState()
+		let { match: { clockState }, dashboard: { overlayID } } = getState()
 
 		// we only do things if the clock is stopped
 		if ( clockState === 'stopped' ) {
